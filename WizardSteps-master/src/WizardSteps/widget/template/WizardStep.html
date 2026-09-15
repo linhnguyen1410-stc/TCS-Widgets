@@ -1,0 +1,12 @@
+<li data-id="${!_data.dataId}" class="${!_data.stepClass}">
+    <a class="wizard-step" id="${!_data.dataId}" role="button" dojoAttachPoint = "wizardStepButton">
+    	<div class="wizard-step-pic" ><ul class="wizard-step-pic-ul"><li style="display:${!_data.showpic1};"><img id="img-${!_data.dataId}-1" src="${!_data.pic1}" /></li><li style="display:${!_data.showpic2};"><img id="img-${!_data.dataId}-2" src="${!_data.pic2}" /></li><li style="display:${!_data.showpic3};"><img id="img-${!_data.dataId}-3" src="${!_data.pic3}" /></li></ul></div>
+        <div class="wizard-step-content">
+        <div class="wizard-step-number" dojoAttachPoint ="wizardStepNumber">${!_data.number}</div>
+        <div class="wizard-step-description">
+       	 	<h5 class="wizard-step-title" dojoAttachPoint = "wizardStepTitle">${!_data.title}</h5>
+        	<h6 class="wizard-step-subtitle" dojoAttachPoint = "wizardStepSubTitle" >${!_data.subTitle}</h6>
+        </div>
+        </div>
+    </a>
+</li>

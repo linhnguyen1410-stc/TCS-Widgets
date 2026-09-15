@@ -1,0 +1,391 @@
+.wizard-steps {
+    list-style: none;
+    padding:0;
+    
+    position:relative;
+}
+
+.wizard-steps:before,
+.wizard-steps:after {
+    content: "";
+    display: table;
+}
+
+.wizard-steps:after {
+    clear: both;   
+}
+
+.wizard-steps li {
+    display: block;
+}
+
+a.wizard-step {
+    display:block;
+    
+    text-align: center;
+}
+
+a.wizard-step:hover,
+a.wizard-step:focus,
+a.wizard-step:active {
+    text-decoration: none;
+}
+
+a.wizard-step.visited {
+    cursor: pointer;
+}
+
+.wizard-step:before {
+    content: "";
+    
+    position:absolute;
+    z-index: -1;
+    top: 40px;
+    left: 0;
+    
+    display: block;
+    width: 100%;
+    height: 1px;
+    background-color: #ccc;
+}
+
+.vertical-wizard-steps .wizard-step:before {
+    content: none;
+}
+
+.wizard-step .wizard-step-number {
+	z-index: 10;
+	position: absolute;
+	text-align: center;
+	margin: 0px;
+	width: 45px;
+	height: 45px;
+	font-size: 20px;
+	line-height: 40px;
+	color: #DDD;
+	border: 2px solid #DDD;
+	border-radius: 50%;
+	left: 0px;
+	margin-top:5px;
+}
+
+.wizard-step.visited .wizard-step-number {
+    color: #4280cb; /* was #59C2E6 */
+    border-color: #4280cb;
+}
+
+.wizard-step.active .wizard-step-number {
+    background-color: #4280cb;
+    border-color: #4280cb;
+    color:#FFF;
+}
+
+.wizard-step .wizard-step-title {
+    color: #CCC;
+    font-weight: bold;
+    margin-bottom:0;
+}
+
+.wizard-step.active .wizard-step-title,
+.wizard-step.visited .wizard-step-title {
+    color:#4280cb;
+}
+
+.wizard-step .wizard-step-subtitle {
+    color:#CCC;
+    margin-top:4px;
+}
+
+.wizard-step.visited:hover .wizard-step-number,
+.wizard-step.visited:focus .wizard-step-number {
+    color:#000;
+    border-color:#DDD;
+    background-color:#DDD;
+}
+
+.wizard-step.visited:active .wizard-step-number {
+    border-color:#4280cb;
+    background-color:#4280cb;
+    color:#FFF;
+}
+
+/* progress wizard styling */
+.wizard-progress {
+    background-color: #EEE;
+    border:1px solid #DDD;
+    border-radius: 4px;
+}
+
+.wizard-progress .wizard-step {
+    background-color: #EEE;
+    /* margin:0 0 0 -30px; */ 
+    padding: 0px 20px 0px 10px;
+    position:relative;
+    text-align: left;
+
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.wizard-progress li:first-child .wizard-step,
+.wizard-progress.vertical-wizard-steps .wizard-step {
+    padding-left:10px;
+}
+
+.wizard-progress .wizard-step:before {
+    content: none;
+}
+
+.wizard-progress .wizard-step:before,
+.wizard-progress .wizard-step:after {
+    background-color:transparent;
+    position:absolute;
+    border:medium solid transparent;
+   
+    left:100%;
+    height:0;
+    width:0;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.wizard-progress .wizard-step.active:before,
+.wizard-progress .wizard-step.active:after {
+    content: "";
+}
+
+.wizard-progress.vertical-wizard-steps .wizard-step.normal:before,
+.wizard-progress.vertical-wizard-steps .wizard-step.normal:after,
+.wizard-progress.vertical-wizard-steps .wizard-step.visited:before,
+.wizard-progress.vertical-wizard-steps .wizard-step.visited:after {
+    content: none;
+}
+
+.wizard-progress.vertical-wizard-steps li {
+    margin-top: 2px;
+}
+.wizard-progress.vertical-wizard-steps li:first-child {
+    margin-top: 0;
+}
+.wizard-progress .wizard-step:before {
+    border-left-color: #DDD;
+    border-width: 25px 15px;
+    margin-top:-25px;
+    top:50%;
+}
+
+.wizard-progress .wizard-step:after {
+    border-left-color:#EEE;
+    border-width:24px 14px;
+    margin-top:-24px;
+    top:50%;
+}
+
+.wizard-progress .wizard-step .wizard-step-number {
+    background-color: #999;
+    border-radius:10px;
+    border:none;
+    
+    color:#FFF;
+    font-size: 14px;
+    font-weight: normal;
+    vertical-align:middle;
+    line-height:1.42857;
+    text-align:center;
+    white-space: nowrap;
+
+    display: inline-block;
+    width: auto;
+    height: auto;
+    margin: 0 10px 0 0;
+    padding: 1px 7px;
+}
+
+.wizard-progress .wizard-step-description {
+    white-space: normal;
+	text-align: left;
+	position: absolute;
+	left: 60px;
+	top: 75px;
+}
+
+.wizard-progress .wizard-step .wizard-step-title {
+   font-weight: normal;
+   margin-top:9px;
+}
+.wizard-progress .wizard-step .wizard-step-subtitle {
+    color: #999;
+    margin-bottom:9px;
+}
+
+.wizard-progress .wizard-step .wizard-step-title,
+.wizard-progress .wizard-step .wizard-step-subtitle {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 90%;
+}
+
+.wizard-progress .wizard-step .wizard-step-description {
+    max-width: 100%;
+    width: 100%;
+}
+
+.wizard-progress .wizard-step.active {
+    background-color: #d9e6f5;
+}
+
+.wizard-progress .wizard-step.active:before {
+    border-left-color: #d9e6f5;
+}
+
+.wizard-progress .wizard-step.visited:before {
+    border-left-color: #4280cb;
+}
+
+.wizard-progress .wizard-step.active:after,
+.wizard-progress .wizard-step.visited:after {
+    border-left-color: #d9e6f5;
+}
+
+.wizard-progress .wizard-step.active .wizard-step-number {
+   background-color: #4280cb;
+}
+
+.wizard-progress .wizard-step.visited {
+    background-color: #d9e6f5;
+}
+
+.wizard-progress .wizard-step.visited .wizard-step-number {
+    background-color: #999;
+}
+
+.wizard-progress .wizard-step.visited .wizard-step-title {
+    color: #999;
+}
+
+.wizard-progress .wizard-step.normal .wizard-step-number {
+    background-color: #4280cb;
+}
+
+.wizard-progress .wizard-step.normal .wizard-step-title {
+    color: #4280cb;
+}
+/*Customized by Linh - 17Feb2021 */
+
+.wizard-steps {
+	height: 250px;
+	scroll-behavior: smooth;
+	scrollbar-width: thin;
+	scrollbar-color: red;
+	overflow-x: scroll;
+	overflow-y: hidden;
+	width: 1530px;
+	text-align:left;
+	white-space: nowrap;
+}
+.wizard-steps li {width:250px; display:inline-block; float:none; vertical-align:top; position:relative;}
+.wizard-step-description {white-space: normal; text-align: left;position: absolute;z-index: 0;top: 80px;left: 60px;}
+.wizard-step-pic {height:50px; margin-bottom:40px; width: 100%;}
+.wizard-step-pic-ul {list-style:none; display: inline;}
+.wizard-step-pic-ul li {width:55px !important; float:left !important; z-index: 10;position: relative;}
+.wizard-step-pic-ul li img {height:45px;}
+.horizontal-wizard-steps .wizard-step::before {top:60px !important; z-index:0;height: 5px; left:auto;}
+.horizontal-wizard-steps li.laststep a.wizard-step::before {left:0px !important;}
+.horizontal-wizard-steps li.laststep a.wizard-step::after {clear:both;}
+.wizard-step-content::before { 
+	content: "";
+	position: absolute;
+	z-index: 0;
+	top: 65px;
+	left: 20px;
+	display: block;
+	width: 5px;
+	height: 25px;
+	background-color: #ccc;
+}
+.wizard-step-completed a.wizard-step::before { background-color:#1756c7;} 
+.wizard-step-completed .wizard-step-content::before { background-color:#1756c7;} 
+.wizard-step-completed-without-animation .wizard-step-content::before { background-color:#1756c7;} 
+.horizontal-wizard-steps li.laststep a.wizard-step::before {
+	background-color: #ccc;
+	width: 25px;
+}
+
+@media only screen and (max-width: 1680px) {
+ .wizard-steps {
+    width: 1300px;
+}
+}
+@media only screen and (max-width: 1600px) {
+ .wizard-steps {
+    width: 1225px;
+}
+}
+@media only screen and (max-width: 1440px) {
+ .wizard-steps {
+    width: 1065px;
+}
+}
+@media screen and (max-width: 1400px) {
+ .wizard-steps {
+    width: 1020px;
+}
+}
+/* set all the widths */
+@media screen and (min-width: 768px) {
+	/* customized by Linh
+    .wizard-steps li {
+        float: left;
+    }
+	*/
+    .wizard-steps.vertical-wizard-steps li {
+        float: none;
+    }
+    .wizard-progress .wizard-step {
+        padding-left: 30px;
+    }
+    .wizard-progress .wizard-step:before,
+    .wizard-progress .wizard-step:after {
+        content: "";
+    }   
+    	/* customized by Linh
+    .wizard-1-steps li {
+        width: 100%;
+    }
+    .wizard-2-steps li {
+        width: 50%;
+    }
+    .wizard-3-steps li {
+        width: 33.3%;   
+    }
+    .wizard-4-steps li {
+        width: 25%;   
+    }
+    .wizard-5-steps li {
+        width: 20%;
+    }
+    .wizard-6-steps li {
+        width:16.6%; 
+    }
+    .wizard-7-steps li {
+        width:14.2%;   
+    }
+    .wizard-8-steps li {
+        width: 12.5%; 
+    }
+    .wizard-9-steps li {
+        width: 11.1%;  
+    }
+    .wizard-10-steps li {
+        width: 10%;
+    }
+    .wizard-11-steps li {
+        width: 9.09%;
+    }
+    .wizard-12-steps li {
+        width: 8.3%;
+    }
+	*/
+    
+}

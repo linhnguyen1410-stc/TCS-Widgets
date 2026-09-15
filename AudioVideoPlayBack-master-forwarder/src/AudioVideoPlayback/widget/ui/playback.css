@@ -1,0 +1,20 @@
+/* disable transitions */
+.AudioVideoPlayback a {
+    transition: initial;
+    color: inherit;
+    -webkit-transition: initial;
+    -moz-transition: initial;
+    -o-transition: initial;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+/* correction width of audio player */
+div.jp-audio ul.jp-controls {
+    width: 450px;
+    padding: 20px 20px 0 20px;
+}
+/*correction hight*/
+div.jp-audio div.jp-type-single div.jp-interface {
+ height: 107px;
+}

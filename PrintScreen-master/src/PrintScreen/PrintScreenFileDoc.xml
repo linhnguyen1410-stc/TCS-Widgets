@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<widget id="PrintScreen.widget.PrintScreenFileDoc" needsEntityContext="true" xmlns="http://www.mendix.com/widget/1.0/">
+    <name>PrintScreen FileDocument</name>
+    <description>Widget that will store the created image to a filedocument, what needs to be the current object</description>
+
+    <icon>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</icon>
+
+    <properties>
+		<property key="orientation" type="enumeration" defaultValue="landscape">
+            <caption>Page Orientation</caption>
+            <category>Behavior</category>
+            <description>Choose the orientation of your pdf.</description>
+            <enumerationValues>
+                <enumerationValue key="portrait">Portrait</enumerationValue>
+                <enumerationValue key="landscape">Landscape</enumerationValue>
+            </enumerationValues>
+        </property>
+		<property key="imgType" type="enumeration" defaultValue="jpeg">
+            <caption>Processing Type</caption>
+            <category>Behavior</category>
+            <description>Choose processing type: JPEG or PNG. JPEG is faster but doesn't support transparency.</description>
+            <enumerationValues>
+                <enumerationValue key="jpeg">JPEG</enumerationValue>
+                <enumerationValue key="png">PNG</enumerationValue>
+            </enumerationValues>
+        </property>
+		<property key="targetClass" type="string" required="true" defaultValue="">
+            <caption>Class of area to print</caption>
+            <category>Behavior</category>
+            <description>The class added to the container of the area to be printed	</description>
+        </property>
+        <property key="onChangeMF" type="microflow" required="false">
+			<caption>Onchange Microflow</caption>
+			<category>Behavior</category>
+			<description>Triggered after the screenshot is created and stored in the filedocument.</description>
+			<returnType type="Void"/>
+		</property>
+		<property key="buttonText" type="translatableString" required="false">
+            <caption>Button Text</caption>
+            <category>Appearance</category>
+            <description>The text of the "print" button.</description>
+        </property>
+		<property key="fileNamePrefix" type="translatableString" required="false">
+            <caption>Filename Prefix</caption>
+            <category>Appearance</category>
+            <description>The prefix of the filename. A timestamp will be appended.</description>
+        </property>
+    </properties>
+</widget>

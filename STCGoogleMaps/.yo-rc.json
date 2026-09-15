@@ -1,0 +1,10 @@
+{
+  "generator-mendix": {
+    "promptValues": {
+      "copyright": "Trieu@2021",
+      "license": "Apache 2",
+      "author": "Linh Nguyen",
+      "boilerplate": "appstore"
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "name": "audiovideoplayback",
+  "version": "4.4.1",
+  "description": "Mendix widget, AudioVideoPlayBack is a Mendix widget built on top of Jplayer.",
+  "author": "Andries Smit <andries.smit@flockofbirds.org, Acellam Guy",
+  "copyright": "Flock of Birds International BV",
+  "main": "GruntFile.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mistaguy/AudioVideoPlayBack.git"
+  },
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/mistaguy/AudioVideoPlayBack/issues"
+  },
+  "devDependencies": {
+    "eslint": "^3.18.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-node": "^4.2.2",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-standard": "^2.1.1",
+    "grunt": "^1.0.4",
+    "grunt-cli": "^1.3.2",
+    "grunt-contrib-clean": "~0.6.0",
+    "grunt-contrib-compress": "^1.5.0",
+    "grunt-contrib-copy": "~0.8.0",
+    "grunt-contrib-uglify": "^4.0.1",
+    "grunt-contrib-watch": "^1.1.0",
+    "grunt-file-append": "0.0.6",
+    "load-grunt-tasks": "^3.1.0"
+  }
+}

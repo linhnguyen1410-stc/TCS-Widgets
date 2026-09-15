@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<widget id="URLRedirector.widget.URLRedirector" needsEntityContext="true" xmlns="http://www.mendix.com/widget/1.0/">
+    <name>URLRedirector</name>
+    <description>Redirect immediately to a given URL in the same browser of the user or in a new browser.</description>
+    <icon>iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0
+U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAANCSURBVBgZBcHbT1t1AMDx72lPKS29UCiz
+0BUMQxwwJptMSIAZzRgu6oOJ+jKjkQdjTAx/gI9mezAmJkb3ppKYqHsxe9oMOh0ZODd3xYVtFOLK
+1dG0pYWensvv4udjaK0BAACYmp8cAz4GjgEtgAmUgeta6XNfjn33CwAAgKG1BmBqftIEpoE3X8+c
+CCZCLVSsBiwXhLQRPOHy1iUhhfxVCPn2N6d+2gMwtNZMzU8GgD8Gk30jJzMvUbGDOLgsVwzqdJCC
+pdDCJYTFlnOVm5s3F4Qnjv/w1oWyDwCYPtrcPTLaNkhRung+AyF81EQdFnUUnSDbdoj1coD2yAsM
+pp497DrejwD+0vjqKPDZ6e7X/PdllS1q1JRgz45QdAJUbMhu7FKuVgkmChjxLMPJg1xevNH5/fXp
+e/6hySNfTLQNHTL8IbZ8AvQ+WmWEW0/81Gwfixt7qPoSwY5HOLEseVXCLEkONWd8tx4/bDKBY5lY
+mrvWJvl6H73+AygEuW0X264RT2kqTTMsqx1wNI0iSDbvcOLpo3iO6DeB5rDZQM7aZNuxiIY72XGj
+lEqKeIvNvoRFXg6QvnMOaVfJZw5S3AkTCUXxXNHo01obhgbXqaCtVkxPcukvD6M+xNayydpqjDYn
+hPA0+5M9BJfv4Nk10BohhGFKoYoVt5Ju9jcSrX+O9byJ7QVoVR8RD0ucDY/dnCDd1EVPaohdu8rC
++u8UqxNIocqm8MTtx8XVdFc4w2//zdMY7qLOn0Eol/G+95BaIZVEodksr9G/f4Q9t8YnFz4Euh/4
+PFd89fPDWdERacG0NigX/iSRcLCFi9SKXCHLv4UlVvKL7NQK5IorDGTGeCb1PLuBe6O+b189P+M6
+3sWZxVleTA8Q9zeQiChsYSOk4KlYO6lYB63xTgL+EC3RNLfX5rm2csOyXGImgOd471zJ3p1zau7h
+iSPHebRt8o9wmL72Oa5ysYXLgWQvw50n+Ts3x5WlWScs23uWz2ZrhtYagFe+fjkqPHFeeHL83ZH3
+TWQKrcMYPoNkvMKnF0/T1zrM1aW53Qbd3rtwZmkdwNBaAwAAMHJm6A0p5AdSqn4lVQIAKO/47yeF
+IlBTMrB9VgsAgP8BON24AjtZfcoAAAAASUVORK5CYII=</icon>
+    
+    <properties>
+        <property key="urlprefix" type="string" required="false">
+            <caption>URL (prefix)</caption>
+            <category>Data source</category>
+            <description>The URL to redirect to. If both the 'URL (prefix)' and 'URL attribute' are provided, the destination is the combination of those two attributes. At least one should be provided. </description>
+        </property>
+
+        <property key="URLAttribute" type="attribute" required="false">
+            <caption>URL Attribute</caption>
+            <category>Data source</category>
+            <description>The attribute that redirects the page with the URL. If both the 'URL (prefix)' and 'URL attribute' are provided, the destination is the combination of those two attributes. At least one should be provided. </description>
+            <attributeTypes>
+                <attributeType name="String" />
+            </attributeTypes>
+        </property>
+
+        <property key="Target" type="enumeration" defaultValue="Page">
+            <caption>Target</caption>
+            <category>Data source</category>
+            <description>In what type of webpage must the URL be open.</description>
+            <enumerationValues>
+                <enumerationValue key="Page">Same browser page</enumerationValue>
+                <enumerationValue key="Blank">New browser page</enumerationValue>
+            </enumerationValues>
+        </property>
+
+    </properties>
+</widget>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<widget id="stc.stcganttchart.STCGanttChart" pluginWidget="true" needsEntityContext="true" offlineCapable="true"
+        xmlns="http://www.mendix.com/widget/1.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.mendix.com/widget/1.0/ ../node_modules/mendix/custom-widget-framework/widget.xsd">
+    <name>STCGantt Chart</name>
+    <description>Custom GanttChart</description>
+    <icon/>
+    <properties>
+        <propertyGroup caption="General">
+            <property key="sampleText" type="string" required="false">
+                <caption>Default value</caption>
+                <description>Sample text input</description>
+            </property>
+        </propertyGroup>
+       <propertyGroup caption="Data Source">
+            <!-- 1. The Data Source (List of Tasks) -->
+            <property key="taskDataSource" type="datasource" isList="true">
+                <caption>Tasks</caption>
+                <description>The list of tasks to display in the Gantt chart</description>
+            </property>
+
+            <!-- 2. Task Name Attribute -->
+            <property key="taskName" type="attribute" dataSource="taskDataSource">
+                <caption>Task Name</caption>
+                <description>Attribute for the task title (e.g., Title from your Task entity)</description>
+                <attributeTypes>
+                    <attributeType name="String"/>
+                </attributeTypes>
+            </property>
+
+            <!-- 3. Start Date Attribute -->
+            <property key="startDate" type="attribute" dataSource="taskDataSource">
+                <caption>Start Date</caption>
+                <description>Attribute for the task start date</description>
+                <attributeTypes>
+                    <attributeType name="DateTime"/>
+                </attributeTypes>
+            </property>
+
+            <!-- 4. End Date Attribute -->
+            <property key="endDate" type="attribute" dataSource="taskDataSource">
+                <caption>End Date</caption>
+                <description>Attribute for the task due date (e.g., DueDate from your Task entity)</description>
+                <attributeTypes>
+                    <attributeType name="DateTime"/>
+                </attributeTypes>
+            </property>
+
+            <!-- 5. Progress Attribute -->
+            <property key="progress" type="attribute" dataSource="taskDataSource">
+                <caption>Progress</caption>
+                <description>Attribute for completion percentage (e.g., PercentCompleted)</description>
+                <attributeTypes>
+                    <attributeType name="Integer"/>
+                    <attributeType name="Decimal"/>
+                </attributeTypes>
+            </property>
+
+            <property key="dependencies" type="attribute" dataSource="taskDataSource">
+            <caption>Dependencies</caption>
+            <description>Attribute containing a comma-separated list of Task IDs that this task depends on.</description>
+            <attributeTypes>
+                <attributeType name="String"/>
+            </attributeTypes>
+        </property>
+        </propertyGroup>
+    </properties>
+</widget>

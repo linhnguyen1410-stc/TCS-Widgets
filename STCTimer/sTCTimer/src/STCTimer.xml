@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<widget id="stc.stctimer.STCTimer" pluginWidget="true" needsEntityContext="true" offlineCapable="true"
+        supportedPlatform="Web"
+        xmlns="http://www.mendix.com/widget/1.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.mendix.com/widget/1.0/ ../node_modules/mendix/custom_widget.xsd">
+    <name>STCTimer</name>
+    <description>Custom Timer widget for Simulator</description>
+    <icon/>
+    <properties>
+        <propertyGroup caption="General">
+            <property key="sampleText" type="string" required="false">
+                <caption>Default value</caption>
+                <description>Sample text input</description>
+            </property>
+        </propertyGroup>
+        <propertyGroup caption="Data Source">
+            <property key="durationAttr" type="attribute" required="true">
+                <caption>Duration Attribute (s)</caption>
+                <description>Linked to the DurationInSeconds (Integer/Long) attribute.</description>
+                <attributeTypes>
+                    <attributeType name="Integer" />
+                    <attributeType name="Long" />
+                </attributeTypes>
+            </property>
+            <property key="isRunningAttr" type="attribute" required="true">
+                <caption>Running State</caption>
+                <description>Linked to the IsRunning (Boolean) attribute to start/pause.</description>
+                <attributeTypes>
+                    <attributeType name="Boolean" />
+                </attributeTypes>
+            </property>
+            <property key="isFinishedAttr" type="attribute" required="true">
+                <caption>Finished State</caption>
+                <description>Linked to the IsFinished (Boolean) attribute to stop and save.</description>
+                <attributeTypes>
+                    <attributeType name="Boolean" />
+                </attributeTypes>
+            </property>
+        </propertyGroup>
+        <propertyGroup caption="Actions">
+            <property key="autoSaveInterval" type="integer" defaultValue="30">
+                <caption>Auto-save Interval (s)</caption>
+                <description>Number of seconds between each auto-save (e.g. 30, 40, 60).</description>
+            </property>
+            <property key="onSaveAction" type="action" required="false">
+                <caption>On Auto-save</caption>
+                <description>Action that performs periodic data saving.</description>
+            </property>
+    </propertyGroup>
+        <propertyGroup caption="UI Settings">
+            <property key="displayFormat" type="enumeration" defaultValue="hhmmss">
+                <caption>Display Format</caption>
+                <description>Choose how the time is formatted on screen.</description>
+                <enumerationValues>
+                    <enumerationValue key="hhmmss">HH:mm:ss</enumerationValue>
+                    <enumerationValue key="mmss">mm:ss</enumerationValue>
+                    <enumerationValue key="ss">Seconds only</enumerationValue>
+                </enumerationValues>
+            </property>
+        </propertyGroup>
+    </properties>
+</widget>

@@ -1,0 +1,47 @@
+/* 1. Container chính của Widget */
+.stc-timer-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+    transition: all 0.3s ease;
+}
+
+/* 2. Hiển thị con số thời gian */
+.stc-timer-display {
+    font-size: 3rem; /* Kích thước lớn, rõ nét [cite: 48] */
+    font-weight: 700;
+    letter-spacing: -1px;
+    /* Quan trọng: Giữ các con số không bị nhảy khi thay đổi */
+    font-variant-numeric: tabular-nums; 
+    color: #fff; /* Màu mặc định cho Light Mode */
+}
+
+/* 3. Nhãn trạng thái khi kết thúc */
+.stc-timer-finished-label {
+    margin-top: 0px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #00B894; /* Màu xanh lá hiện đại cho trạng thái hoàn thành */
+    letter-spacing: 1px;
+}
+
+/* 4. Hỗ trợ Dark Mode  */
+@media (prefers-color-scheme: dark) {
+    .stc-timer-display {
+        color: #FFFFFF;
+    }
+    
+    .stc-timer-container {
+        background-color: rgba(255, 255, 255, 0.05);
+        border-radius: 8px;
+    }
+}
+
+/* 5. Tùy chỉnh thêm nếu dùng trong Mendix Dark Theme */
+.mx-dark .stc-timer-display {
+    color: #E0E0E0;
+}

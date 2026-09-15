@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<widget id="stc.stcscrolltotop.STCScrollToTop" pluginWidget="true" needsEntityContext="true" offlineCapable="true"
+        supportedPlatform="Web"
+        xmlns="http://www.mendix.com/widget/1.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.mendix.com/widget/1.0/ ../node_modules/mendix/custom_widget.xsd">
+    <name>STCScroll To Top</name>
+    <description>STC Development</description>
+    <icon/>
+    <properties>
+        <propertyGroup caption="General">
+            <property key="elementClassName" type="string" required="false">
+                <caption>ClassName of Element</caption>
+                <description>The classname of the Element scroll. If it is empty, the window element will be used.</description>
+            </property>            
+           
+        </propertyGroup>
+    </properties>
+</widget>

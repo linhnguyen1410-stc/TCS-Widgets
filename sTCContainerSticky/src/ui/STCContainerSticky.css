@@ -1,0 +1,45 @@
+/*
+Place your custom CSS here
+*/
+
+.is-sticky {
+  position: fixed !important; 
+  /*position: absolute !important; */ 
+  height: auto;
+  z-index: 9999;
+  animation: 500ms ease-in-out 0s normal none 1 running fadeInDown;
+  width: 410px;
+  background-color: currentColor;  
+  border-radius: 7px;
+}
+.is-sticky-draggable {
+  position: fixed !important; 
+  /*position: absolute !important; */  
+  z-index: 9999;
+  height: auto;
+  animation: 500ms ease-in-out 0s normal none 1 running fadeInDown;
+  width: 410px;
+  background-color: currentColor;  
+  border-radius: 7px;
+}
+.is-sticky .mx-grid-controlbar, .is-sticky-draggable .mx-grid-controlbar {
+  color: #fff !important;
+  margin: 0px;
+  padding: 10px;
+}
+.is-sticky .mx-grid-content, .is-sticky-draggable .mx-grid-content {
+  margin: 0px;
+  padding: 10px;
+}
+.is-sticky .close-button, .is-sticky-draggable .close-button {
+  display: block !important;
+  width: 20px;
+  height: 20px;
+  background-color: transparent !important;
+  color: #fff;
+  padding: 0px;
+  border: 0px;
+  position: absolute;
+  right: 5px;
+  top: 5px;
+}

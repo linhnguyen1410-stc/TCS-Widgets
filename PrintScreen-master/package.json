@@ -1,0 +1,42 @@
+{
+  "name": "PrintScreen",
+  "version": "1.0.1",
+  "description": "",
+  "license": "",
+  "author": "",
+  "private": true,
+  "dependencies": {
+     "jspdf": "^2.5.1"
+  },
+  "devDependencies": {
+    "ansi-colors": "^4.1.1",
+    "css-loader": "^6.6.0",
+    "del": "^2.2.2",
+    "fancy-log": "^1.3.3",
+    "gulp": "^4.0.2",
+    "gulp-if": "^3.0.0",
+    "gulp-intercept": "^0.1.0",
+    "gulp-json-transform": "^0.4.7",
+    "gulp-jsvalidate": "^4.0.0",
+    "gulp-newer": "^1.4.0",
+    "gulp-plumber": "^1.2.1",
+    "gulp-zip": "^5.0.0",
+    "widgetbuilder-gulp-helper": "https://github.com/JelteMX/widgetbuilder-gulp-helper/archive/1.0.2.tar.gz",
+    "yargs": "^14.0.0"
+  },
+  "engines": {
+    "node": ">=5"
+  },
+  "generatorVersion": "2.2.5",
+  "paths": {
+    "testProjectFolder": "./test/",
+    "testProjectFileName": "Test.mpr"
+  },
+  "scripts": {
+    "build": "node ./node_modules/gulp/bin/gulp build",
+    "version": "node ./node_modules/gulp/bin/gulp version",
+    "icon": "node ./node_modules/gulp/bin/gulp icon",
+    "folders": "node ./node_modules/gulp/bin/gulp folders",
+    "modeler": "node ./node_modules/gulp/bin/gulp modeler"
+  }
+}

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<widget id="SelectionHelper.widget.SelectionHelper" needsEntityContext="true" xmlns="http://www.mendix.com/widget/1.0/">
+    <name>SelectionHelper</name>
+    <description>The description of this widget.</description>
+
+    <icon />
+
+    <properties>
+        <property key="listenRef" type="entity" isPath="yes" pathType="reference" allowNonPersistableEntities="true" required="false">
+            <caption>Listener Reference</caption>
+            <category>Behavior</category>
+            <description>An reference from the context entity to listen to for the selection. Should be the same type as the list entity. If not selected, the widget will use the context entity.</description>
+		</property>
+    </properties>
+</widget>

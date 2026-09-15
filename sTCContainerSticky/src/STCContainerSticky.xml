@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<widget id="stc.stccontainersticky.STCContainerSticky" pluginWidget="true" needsEntityContext="true" offlineCapable="true"
+        supportedPlatform="Web"
+        xmlns="http://www.mendix.com/widget/1.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.mendix.com/widget/1.0/ ../node_modules/mendix/custom_widget.xsd">
+    <name>STCContainer Sticky</name>
+    <description>Custom widget for the STC App</description>
+    <icon/>
+    <properties>
+        <propertyGroup caption="General">
+            <property key="sampleText" type="string" required="false">
+                <caption>Class name</caption>
+                <description>CSS Class of the container</description>
+            </property>
+            <property key="enableMove" type="boolean" defaultValue="false">
+                <caption>Enable Move control</caption>
+                <description>Allow control can be moved</description>
+            </property>
+            <property key="fromTopSide" type="boolean" defaultValue="true">
+                <caption>Checking from Top side</caption>
+                <description>The True value is the popup will be shown when scrolling top, otherwise showing during scrolling down</description>
+            </property>
+        </propertyGroup>
+    </properties>
+</widget>
