@@ -29,7 +29,7 @@
     },
     "demoAdministrator": {
       "username": "demo_administrator",
-      "password": "1",
+      "password": "*********",
       "role": "Administrator",
       "loginMethod": "demo user link on index.html"
     },
@@ -41,7 +41,7 @@
     },
     "demoFunctionalManager": {
       "username": "demo_functional_manager",
-      "password": "1",
+      "password": "********",
       "role": "FunctionalManager",
       "loginMethod": "demo user link on index.html"
     }
@@ -107,7 +107,7 @@
     "student": {
       "description": "Student role - can view loading canvas",
       "username": "sp_testuser01@edu.stc-r.nl",
-      "password": "#STCGroup1"
+      "password": "*********"
     }
   },
   "notes": [
