@@ -1,0 +1,4 @@
+# Test Doc
+
+[ARCHITECTURE.md](../ARCHITECTURE.md)
+[UPGRADE_GUIDE.md](../docs/UPGRADE_GUIDE.md)

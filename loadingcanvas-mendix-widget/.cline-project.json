@@ -1,0 +1,77 @@
+{
+  "project": "loadingcanvas-mendix-widget",
+  "description": "Mendix LoadingCanvas widget with automated MCP server testing",
+  "mcpServers": {
+    "mendix-postgres": {
+      "command": "npx",
+      "args": ["-y", "@mendix/mcp-postgres"],
+      "env": {
+        "POSTGRES_HOST": "localhost",
+        "POSTGRES_PORT": "5432",
+        "POSTGRES_DATABASE": "mendix",
+        "POSTGRES_USER": "mendix",
+        "POSTGRES_PASSWORD": "mendix"
+      },
+      "description": "PostgreSQL database for Mendix app data verification"
+    },
+    "firefox-devtools": {
+      "command": "npx",
+      "args": ["-y", "@firefox-devtools/mcp"],
+      "env": {
+        "FIREFOX_BINARY": "C:/Program Files/Mozilla Firefox/firefox.exe",
+        "FIREFOX_PROFILE": "default"
+      },
+      "description": "Firefox DevTools for Mendix app browser automation"
+    }
+  },
+  "projectConfig": {
+    "mendix": {
+      "version": "10.24.17.102810",
+      "deploymentPath": "D:/Mendix/TCSTransport-main/deployment",
+      "runtimePort": 8882,
+      "adminPort": 9892,
+      "mxInstallPath": "C:/Program Files/Mendix/10.24.17.102810"
+    },
+    "widget": {
+      "name": "LoadingCanvas",
+      "namespace": "stcvn.loadingcanvas",
+      "sourcePath": "d:/source/loadingcanvas-mendix-widget"
+    },
+    "database": {
+      "type": "postgresql",
+      "host": "localhost",
+      "port": 5432,
+      "database": "mendix",
+      "user": "mendix",
+      "password": "mendix"
+    },
+    "testUsers": {
+      "student": {
+        "username": "sp_testuser01@edu.stc-r.nl",
+        "password": "#STCGroup1",
+        "role": "Student"
+      }
+    },
+    "urls": {
+      "base": "http://localhost:8882",
+      "login": "http://localhost:8882/login.html",
+      "index": "http://localhost:8882/index.html",
+      "loadingMeterValidation": "http://localhost:8882/p/LoadingMeter_Validation",
+      "truckSelectionView2D": "http://localhost:8882/p/TruckSelection_View2D",
+      "homepageStudent": "http://localhost:8882/p/Homepage_Student"
+    }
+  },
+  "devCommands": {
+    "startMendix": "cd D:/Mendix/TCSTransport-main/deployment && java -jar runtime/launcher/runtimelauncher.jar -d .",
+    "buildWidget": "cd d:/source/loadingcanvas-mendix-widget && npm run build",
+    "testWidget": "cd d:/source/loadingcanvas-mendix-widget && npm test",
+    "checkTypes": "cd d:/source/loadingcanvas-mendix-widget && npx tsc --noEmit",
+    "checkImports": "cd d:/source/loadingcanvas-mendix-widget && npm run check:imports"
+  },
+  "testData": {
+    "keyQueries": {
+      "technicalDetailsWithDimensions": "SELECT id, nameresource, combinationlength, combinationwidth FROM datamodelmodule$technicaldetails WHERE combinationlength > 0 OR combinationwidth > 0;",
+      "truckSelectionWithDimensions": "SELECT ts.id, ts.truckindex, td.nameresource, td.combinationlength, td.combinationwidth FROM tcsloadingmeter$truckselection ts LEFT JOIN tcsloadingmeter$truckselection_resourceinstance tsri ON ts.id = tsri.tcsloadingmeter$truckselectionid LEFT JOIN tcstransportmodule$resourceinstance ri ON tsri.tcstransportmodule$resourceinstanceid = ri.id LEFT JOIN tcstransportmodule$resourceinstance_resource rir ON ri.id = rir.tcstransportmodule$resourceinstanceid LEFT JOIN datamodelmodule$resource r ON rir.datamodelmodule$resourceid = r.id LEFT JOIN datamodelmodule$resource_technicaldetails rtd ON r.id = rtd.datamodelmodule$resourceid LEFT JOIN datamodelmodule$technicaldetails td ON rtd.datamodelmodule$technicaldetailsid = td.id ORDER BY ts.truckindex;"
+    }
+  }
+}

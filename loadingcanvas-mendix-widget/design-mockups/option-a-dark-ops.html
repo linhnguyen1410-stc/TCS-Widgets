@@ -1,0 +1,674 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Option A — Industrial Control Room (Dark Ops)</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        border-radius: 0;
+      }
+      button {
+        font: inherit;
+      }
+      body {
+        font-family: "Segoe UI", Roboto, Arial, sans-serif;
+        background: #0f141b;
+        color: #dfe8f1;
+        font-size: 13px;
+      }
+      .app {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        min-width: 1320px;
+      }
+      .topbar {
+        height: 46px;
+        flex: none;
+        background: #161d27;
+        border-bottom: 1px solid #2a3644;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        padding: 0 16px;
+      }
+      .brand {
+        font-weight: 700;
+        letter-spacing: 2px;
+        color: #22d3ee;
+        display: flex;
+        align-items: center;
+        gap: 9px;
+      }
+      .brand i {
+        width: 12px;
+        height: 12px;
+        background: #22d3ee;
+      }
+      .planmeta {
+        color: #8fa3b8;
+        letter-spacing: 1px;
+        font-size: 12px;
+      }
+      .planmeta b {
+        color: #c7d4e2;
+      }
+      .live {
+        margin-left: auto;
+        font-size: 11px;
+        letter-spacing: 1px;
+        padding: 4px 10px;
+        border: 1px solid #1c5132;
+        color: #34d399;
+        background: rgba(52, 211, 153, 0.08);
+      }
+      .main {
+        flex: 1;
+        display: flex;
+        min-height: 0;
+      }
+      .sidebar {
+        width: 284px;
+        flex: none;
+        background: #141a22;
+        border-right: 1px solid #2a3644;
+        display: flex;
+        flex-direction: column;
+        overflow: auto;
+      }
+      .side-head {
+        font-size: 11px;
+        letter-spacing: 1.5px;
+        color: #8fa3b8;
+        padding: 12px 14px;
+        border-bottom: 1px solid #232e3c;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .side-head em {
+        font-style: normal;
+        color: #22d3ee;
+      }
+      .cargo-item {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        padding: 11px 14px;
+        border-bottom: 1px solid #1c2530;
+        cursor: grab;
+      }
+      .cargo-item:hover {
+        background: #1a2330;
+      }
+      .chip {
+        width: 28px;
+        height: 28px;
+        border: 1px solid #0b0f14;
+        flex: none;
+      }
+      .ci-name {
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        font-size: 12.5px;
+      }
+      .ci-meta {
+        color: #7c8fa3;
+        font-size: 11px;
+        margin-top: 2px;
+        font-family: Consolas, monospace;
+      }
+      .grip {
+        margin-left: auto;
+        color: #44546a;
+        letter-spacing: 2px;
+        font-size: 14px;
+      }
+      .drop-hint {
+        margin: 12px 14px 0;
+        padding: 10px;
+        border: 1px dashed #31465c;
+        color: #5d7a94;
+        font-size: 11px;
+        letter-spacing: 0.5px;
+        line-height: 1.5;
+      }
+      .legend {
+        margin-top: auto;
+        padding: 12px 14px;
+        border-top: 1px solid #232e3c;
+        font-size: 10.5px;
+        color: #7c8fa3;
+        letter-spacing: 0.5px;
+      }
+      .lg {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        margin-top: 7px;
+      }
+      .sw {
+        width: 14px;
+        height: 14px;
+        border: 1px solid #44546a;
+        flex: none;
+      }
+      .sw.teal {
+        background: rgba(45, 212, 191, 0.2);
+        border-color: #2dd4bf;
+      }
+      .sw.cyand {
+        border: 1px dashed #22d3ee;
+        background: transparent;
+      }
+      .sw.gray {
+        background: #2a3644;
+      }
+      .sw.redh {
+        background: repeating-linear-gradient(
+          45deg,
+          rgba(248, 113, 113, 0.15) 0 4px,
+          rgba(248, 113, 113, 0.35) 4px 8px
+        );
+        border-color: #f87171;
+      }
+      .stage {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+      }
+      .ruler {
+        position: relative;
+        height: 26px;
+        margin: 10px 16px 0;
+        flex: none;
+      }
+      .tk {
+        position: absolute;
+        top: 0;
+        width: 1px;
+        height: 7px;
+        background: #3b4a5e;
+      }
+      .tk span {
+        position: absolute;
+        top: 8px;
+        left: -9px;
+        font-size: 9px;
+        color: #5d7186;
+        font-family: Consolas, monospace;
+      }
+      .canvas {
+        position: relative;
+        flex: 1;
+        margin: 2px 16px 0;
+        border: 1px solid #2a3644;
+        background-color: #141a21;
+        overflow: hidden;
+        background-image:
+          linear-gradient(rgba(34, 211, 238, 0.045) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(34, 211, 238, 0.045) 1px, transparent 1px),
+          linear-gradient(rgba(34, 211, 238, 0.1) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(34, 211, 238, 0.1) 1px, transparent 1px);
+        background-size:
+          37.5px 37.5px,
+          37.5px 37.5px,
+          75px 75px,
+          75px 75px;
+      }
+      .cab {
+        position: absolute;
+        left: 160px;
+        top: 118px;
+        width: 70px;
+        height: 140px;
+        border: 2px solid #46586e;
+        background: rgba(70, 88, 110, 0.16);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .cab span {
+        font-size: 9px;
+        letter-spacing: 1px;
+        color: #5d7186;
+      }
+      .bed {
+        position: absolute;
+        left: 230px;
+        top: 96px;
+        width: 900px;
+        height: 184px;
+        border: 2px solid #46586e;
+        background: rgba(70, 88, 110, 0.08);
+      }
+      .zonetag {
+        position: absolute;
+        left: 232px;
+        top: 72px;
+        font-size: 10px;
+        letter-spacing: 1.5px;
+        color: #22d3ee;
+      }
+      .zone {
+        position: absolute;
+        left: 231px;
+        top: 97px;
+        width: 898px;
+        height: 182px;
+        border: 1px dashed rgba(34, 211, 238, 0.5);
+        pointer-events: none;
+      }
+      .item {
+        position: absolute;
+        border: 1.5px solid #46586e;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1px;
+      }
+      .item b {
+        font-size: 11px;
+        letter-spacing: 0.5px;
+      }
+      .item s {
+        text-decoration: none;
+        font-size: 9px;
+        opacity: 0.85;
+        font-family: Consolas, monospace;
+      }
+      .sel {
+        outline: 2px dashed #22d3ee;
+        outline-offset: 3px;
+      }
+      .hd {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        background: #22d3ee;
+        border: 1px solid #0f141b;
+      }
+      .rot {
+        position: absolute;
+        right: -8px;
+        bottom: -26px;
+        width: 16px;
+        height: 16px;
+        background: #0f141b;
+        border: 1px solid #22d3ee;
+        color: #22d3ee;
+        font-size: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+      .lock {
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: #0f141b;
+        border-right: 1px solid #3b4a5e;
+        border-bottom: 1px solid #3b4a5e;
+        color: #8fa3b8;
+        font-size: 9px;
+        padding: 1px 5px;
+      }
+      .err {
+        background: repeating-linear-gradient(
+          45deg,
+          rgba(248, 113, 113, 0.14) 0 6px,
+          rgba(248, 113, 113, 0.32) 6px 12px
+        ) !important;
+        border-color: #f87171 !important;
+      }
+      .foot {
+        flex: none;
+        padding: 8px 16px 12px;
+        color: #4f6076;
+        font-size: 10px;
+        letter-spacing: 1px;
+        font-family: Consolas, monospace;
+      }
+      .infopanel {
+        width: 302px;
+        flex: none;
+        background: #141a22;
+        border-left: 1px solid #2a3644;
+        overflow: auto;
+        display: flex;
+        flex-direction: column;
+      }
+      .p-head {
+        font-size: 11px;
+        letter-spacing: 1.5px;
+        color: #8fa3b8;
+        padding: 12px 14px;
+        border-bottom: 1px solid #232e3c;
+      }
+      .block {
+        padding: 12px 14px;
+        border-bottom: 1px solid #1c2530;
+      }
+      .bl {
+        font-size: 10px;
+        letter-spacing: 1.2px;
+        color: #61728a;
+        margin-bottom: 8px;
+      }
+      .big {
+        font-size: 30px;
+        font-weight: 700;
+        line-height: 1;
+        color: #eaf2f9;
+      }
+      .big span {
+        font-size: 12px;
+        color: #7c8fa3;
+        font-weight: 400;
+        margin-left: 6px;
+      }
+      .bar {
+        height: 10px;
+        background: #1d2733;
+        border: 1px solid #31404f;
+        margin-top: 8px;
+      }
+      .bar i {
+        display: block;
+        height: 100%;
+      }
+      .seg {
+        display: flex;
+        gap: 3px;
+        margin-top: 8px;
+      }
+      .seg i {
+        flex: 1;
+        height: 12px;
+        background: #1d2733;
+        border: 1px solid #31404f;
+      }
+      .seg i.on {
+        background: #2dd4bf;
+        border-color: #2dd4bf;
+      }
+      .kr {
+        display: flex;
+        justify-content: space-between;
+        font-size: 11.5px;
+        color: #9fb2c6;
+        margin-top: 7px;
+        font-family: Consolas, monospace;
+      }
+      .kr b {
+        color: #c7d4e2;
+        font-weight: 600;
+      }
+      .alert {
+        margin-top: 2px;
+        border: 1px solid rgba(248, 113, 113, 0.55);
+        background: rgba(248, 113, 113, 0.07);
+        padding: 8px 10px;
+        font-size: 11.5px;
+        color: #fca5a5;
+        line-height: 1.5;
+      }
+      .alert b {
+        color: #f87171;
+        letter-spacing: 0.5px;
+      }
+      .okl {
+        margin-top: 8px;
+        font-size: 11.5px;
+        color: #34d399;
+        letter-spacing: 0.3px;
+      }
+      .btns {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        padding: 12px 14px;
+      }
+      .btns button {
+        font-size: 11.5px;
+        letter-spacing: 1px;
+        padding: 9px 6px;
+        background: #182130;
+        border: 1px solid #3b4a5e;
+        color: #c7d4e2;
+        cursor: pointer;
+      }
+      .btns button:hover {
+        border-color: #22d3ee;
+        color: #22d3ee;
+      }
+      .pri {
+        background: #0e7490 !important;
+        border-color: #22d3ee !important;
+        color: #fff !important;
+      }
+      .pri:hover {
+        border-color: #67e8f9 !important;
+        color: #fff !important;
+      }
+      .wrn {
+        border-color: #fbbf24 !important;
+        color: #fbbf24 !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar">
+        <div class="brand"><i></i>LOADING CANVAS</div>
+        <div class="planmeta">PLAN <b>PLN-2024-0118</b> · TRUCK ACT-8842 · MEGA TRAILER 13.6 M</div>
+        <div class="live">● LIVE VALIDATION</div>
+      </header>
+      <div class="main">
+        <aside class="sidebar">
+          <div class="side-head">CARGO MANIFEST <em>3 REMAINING</em></div>
+          <div class="cargo-item">
+            <div class="chip" style="background: #5eead4"></div>
+            <div>
+              <div class="ci-name">EUR-I</div>
+              <div class="ci-meta">PALLET · 1.20×0.80 M · 750 KG</div>
+            </div>
+            <div class="grip">⠿</div>
+          </div>
+          <div class="cargo-item">
+            <div class="chip" style="background: #7dd3fc"></div>
+            <div>
+              <div class="ci-name">BOX-J</div>
+              <div class="ci-meta">BOX · 0.60×0.40 M · 150 KG</div>
+            </div>
+            <div class="grip">⠿</div>
+          </div>
+          <div class="cargo-item">
+            <div class="chip" style="background: #c4b5fd"></div>
+            <div>
+              <div class="ci-name">CRATE-K</div>
+              <div class="ci-meta">CRATE · 1.00×1.00 M · 480 KG</div>
+            </div>
+            <div class="grip">⠿</div>
+          </div>
+          <div class="drop-hint">DRAG ONTO THE CANVAS — OR CLICK TO AUTO-PLACE IN THE FIRST FREE SLOT.</div>
+          <div class="legend">
+            <div style="letter-spacing: 1.2px; color: #61728a; font-size: 10px; margin-bottom: 3px">LEGEND</div>
+            <div class="lg"><span class="sw teal"></span>PLACED</div>
+            <div class="lg"><span class="sw cyand"></span>SELECTED</div>
+            <div class="lg"><span class="sw gray"></span>LOCKED</div>
+            <div class="lg"><span class="sw redh"></span>COLLISION</div>
+          </div>
+        </aside>
+
+        <section class="stage">
+          <div class="ruler">
+            <div class="tk" style="left: 0px"><span>0</span></div>
+            <div class="tk" style="left: 75px"><span>1</span></div>
+            <div class="tk" style="left: 150px"><span>2</span></div>
+            <div class="tk" style="left: 225px"><span>3</span></div>
+            <div class="tk" style="left: 300px"><span>4</span></div>
+            <div class="tk" style="left: 375px"><span>5</span></div>
+            <div class="tk" style="left: 450px"><span>6</span></div>
+            <div class="tk" style="left: 525px"><span>7</span></div>
+            <div class="tk" style="left: 600px"><span>8</span></div>
+            <div class="tk" style="left: 675px"><span>9</span></div>
+            <div class="tk" style="left: 750px"><span>10</span></div>
+            <div class="tk" style="left: 825px"><span>11</span></div>
+            <div class="tk" style="left: 900px"><span>12</span></div>
+          </div>
+          <div class="canvas">
+            <div class="zonetag">TRAILER LOAD ZONE · 12.00 × 2.45 M</div>
+            <div class="zone"></div>
+            <div class="cab"><span>CAB</span></div>
+            <div class="bed"></div>
+
+            <div
+              class="item"
+              style="
+                left: 238px;
+                top: 104px;
+                width: 90px;
+                height: 60px;
+                background: rgba(45, 212, 191, 0.16);
+                border-color: #2dd4bf;
+              ">
+              <b>EUR-A</b><s>850 KG</s>
+              <div class="lock">🔒</div>
+            </div>
+            <div
+              class="item"
+              style="
+                left: 333px;
+                top: 104px;
+                width: 90px;
+                height: 60px;
+                background: rgba(56, 189, 248, 0.16);
+                border-color: #38bdf8;
+              ">
+              <b>EUR-B</b><s>790 KG</s>
+            </div>
+            <div
+              class="item"
+              style="
+                left: 428px;
+                top: 104px;
+                width: 90px;
+                height: 60px;
+                background: rgba(167, 139, 250, 0.16);
+                border-color: #a78bfa;
+              ">
+              <b>EUR-C</b><s>910 KG</s>
+            </div>
+            <div
+              class="item sel"
+              style="
+                left: 523px;
+                top: 104px;
+                width: 90px;
+                height: 60px;
+                background: rgba(251, 191, 36, 0.18);
+                border-color: #fbbf24;
+              ">
+              <b>EUR-D</b><s>640 KG</s>
+              <div class="hd" style="left: -5px; top: -5px"></div>
+              <div class="hd" style="right: -5px; top: -5px"></div>
+              <div class="hd" style="left: -5px; bottom: -5px"></div>
+              <div class="hd" style="right: -5px; bottom: -5px"></div>
+              <div class="rot">⟳</div>
+            </div>
+            <div
+              class="item"
+              style="
+                left: 618px;
+                top: 143px;
+                width: 60px;
+                height: 90px;
+                background: rgba(244, 114, 182, 0.16);
+                border-color: #f472b6;
+              ">
+              <b>EUR-G</b><s>880 KG · 90°</s>
+            </div>
+            <div
+              class="item"
+              style="
+                left: 688px;
+                top: 112px;
+                width: 60px;
+                height: 45px;
+                background: rgba(163, 230, 53, 0.14);
+                border-color: #a3e635;
+              ">
+              <b>BOX-E</b>
+            </div>
+            <div
+              class="item"
+              style="
+                left: 753px;
+                top: 117px;
+                width: 60px;
+                height: 45px;
+                background: rgba(251, 146, 60, 0.14);
+                border-color: #fb923c;
+              ">
+              <b>BOX-F</b>
+            </div>
+            <div class="item err" style="left: 420px; top: 150px; width: 90px; height: 60px">
+              <b>EUR-H</b><s>1,200 KG</s>
+            </div>
+          </div>
+          <div class="foot">
+            SCALE 75 PX/M · GRID 0.50 M · SNAP 0.25 M · ROTATION 90° STEP · DRAG TO MOVE · ⟳ HANDLE TO ROTATE
+          </div>
+        </section>
+
+        <aside class="infopanel">
+          <div class="p-head">PLAN STATUS</div>
+          <div class="block">
+            <div class="bl">LOAD PROGRESS</div>
+            <div class="big">73<span>% PLACED · 8 / 11</span></div>
+            <div class="seg">
+              <i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i
+              ><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i>
+            </div>
+            <div class="kr"><span>ITEMS PLACED</span><b>8 OF 11</b></div>
+            <div class="kr"><span>REMAINING IN LIST</span><b>3</b></div>
+          </div>
+          <div class="block">
+            <div class="bl">FLOOR USAGE</div>
+            <div class="big">62<span>%</span></div>
+            <div class="bar"><i style="width: 62%; background: #22d3ee"></i></div>
+            <div class="kr"><span>FLOOR USED</span><b>62%</b></div>
+            <div class="kr"><span>FLOOR FREE</span><b>38%</b></div>
+          </div>
+          <div class="block">
+            <div class="bl">PAYLOAD</div>
+            <div class="big">24<span>% · 5,830 / 24,000 KG</span></div>
+            <div class="bar"><i style="width: 24%; background: #fbbf24"></i></div>
+            <div class="kr"><span>PAYLOAD USED</span><b>5,830 KG</b></div>
+            <div class="kr"><span>PAYLOAD FREE</span><b>18,170 KG</b></div>
+          </div>
+          <div class="block">
+            <div class="bl">VALIDATION</div>
+            <div class="alert">
+              <b>▲ COLLISION</b><br />EUR-H overlaps EUR-C (Δ 0.42 m²). Shift, rotate or remove the item to resolve.
+            </div>
+            <div class="okl">✓ AXLE LOAD &nbsp;·&nbsp; ✓ WEIGHT DIST. &nbsp;·&nbsp; ✓ TRUCK BOUNDS</div>
+          </div>
+          <div class="btns">
+            <button class="pri">SAVE PLAN</button>
+            <button>LOAD PLAN</button>
+            <button>AUTO LOAD</button>
+            <button class="wrn">VERIFY · 8/11</button>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </body>
+</html>

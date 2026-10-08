@@ -1,0 +1,12 @@
+/*
+Place your custom CSS here
+*/
+.widget-loading-canvas {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.widget-loading-canvas canvas,
+.widget-loading-canvas .widget-loading-canvas-grid {
+  position: relative;
+}

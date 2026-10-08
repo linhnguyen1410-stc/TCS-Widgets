@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Loading Canvas Widget — UI Design Options</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        border-radius: 0;
+      }
+      body {
+        font-family: "Segoe UI", Arial, sans-serif;
+        background: #eef1f6;
+        color: #22303f;
+        padding: 32px;
+      }
+      h1 {
+        font-size: 22px;
+        margin-bottom: 4px;
+      }
+      .sub {
+        color: #68788c;
+        font-size: 13px;
+        margin-bottom: 26px;
+      }
+      .wrap {
+        max-width: 1240px;
+      }
+      a.card {
+        display: block;
+        background: #fff;
+        border: 1px solid #dde3ea;
+        text-decoration: none;
+        color: inherit;
+        margin-bottom: 20px;
+        transition:
+          border-color 0.15s,
+          box-shadow 0.15s;
+      }
+      a.card:hover {
+        border-color: #2178d0;
+        box-shadow: 0 2px 10px rgba(33, 120, 208, 0.15);
+      }
+      .bar {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 16px;
+        border-bottom: 1px solid #dde3ea;
+      }
+      .tag {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        padding: 4px 9px;
+        color: #fff;
+        background: #2178d0;
+      }
+      .bar h2 {
+        font-size: 16px;
+      }
+      .bar span {
+        margin-left: auto;
+        font-size: 12px;
+        color: #8296ac;
+      }
+      .preview {
+        height: 300px;
+        overflow: hidden;
+        border-bottom: 1px solid #dde3ea;
+        background: #f7f9fb;
+      }
+      .preview iframe {
+        width: 1440px;
+        height: 1040px;
+        border: 0;
+        transform: scale(0.78);
+        transform-origin: 0 0;
+        pointer-events: none;
+      }
+      .desc {
+        padding: 12px 16px;
+        font-size: 13px;
+        color: #68788c;
+        line-height: 1.6;
+      }
+      .note {
+        margin-top: 8px;
+        font-size: 12px;
+        color: #8296ac;
+        line-height: 1.7;
+        max-width: 1000px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Loading Canvas Widget — UI Design Options</h1>
+    <div class="sub">
+      Static visual mockups · sharp corners only · scenario: 8 of 11 cargo placed, 1 collision error, 3 items remaining
+    </div>
+    <div class="wrap">
+      <a class="card" href="option-a-dark-ops.html" target="_blank" rel="noopener">
+        <div class="bar">
+          <span class="tag">OPTION A</span>
+          <h2>Industrial Control Room — Dark Ops</h2>
+          <span>option-a-dark-ops.html</span>
+        </div>
+        <div class="preview"><iframe src="option-a-dark-ops.html" scrolling="no"></iframe></div>
+        <div class="desc">
+          Dark slate operations theme with glowing cyan grid, left cargo manifest sidebar with drag handles, truck
+          silhouette with highlighted load zone and meter ruler, right dashboard with segmented progress, payload gauge,
+          collision alert stack and flat action buttons.
+        </div>
+      </a>
+
+      <a class="card" href="option-b-light-saas.html" target="_blank" rel="noopener">
+        <div class="bar">
+          <span class="tag">OPTION B</span>
+          <h2>Mendix Atlas Light — SaaS Clean</h2>
+          <span>option-b-light-saas.html</span>
+        </div>
+        <div class="preview"><iframe src="option-b-light-saas.html" scrolling="no"></iframe></div>
+        <div class="desc">
+          Light Atlas-style theme: white canvas card with subtle blue grid and floating glass status panel (stats, usage
+          bars, validation alert, action buttons), bottom cargo rail with proportional thumbnails and hover state,
+          pastel cargo cards with square corner handles.
+        </div>
+      </a>
+
+      <a class="card" href="option-c-blueprint-pro.html" target="_blank" rel="noopener">
+        <div class="bar">
+          <span class="tag">OPTION C</span>
+          <h2>Technical Blueprint — CAD Style</h2>
+          <span>option-c-blueprint-pro.html</span>
+        </div>
+        <div class="preview"><iframe src="option-c-blueprint-pro.html" scrolling="no"></iframe></div>
+        <div class="desc">
+          Blueprint-blue engineering sheet: monospace manifest table with per-item status, precise truck outline with
+          yellow dimension lines and meter ticks, crosshair readout, HUD statistics/actions panels, legend and drawing
+          title block.
+        </div>
+      </a>
+    </div>
+    <p class="note">
+      These mockups are standalone HTML files in <b>/design-mockups</b> for visual review only — no production source
+      (<b>src/</b>) was modified. All elements use sharp corners (no border-radius anywhere). Click any card to view the
+      full-size static page.
+    </p>
+  </body>
+</html>

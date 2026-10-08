@@ -1,0 +1,551 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Option B — Mendix Atlas Light (SaaS Clean)</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        border-radius: 0;
+      }
+      button {
+        font: inherit;
+      }
+      body {
+        font-family: "Segoe UI", Arial, sans-serif;
+        background: #eef1f6;
+        color: #22303f;
+        font-size: 13px;
+      }
+      .topbar {
+        height: 52px;
+        background: #fff;
+        border-bottom: 1px solid #dde3ea;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 0 20px;
+      }
+      .logo {
+        width: 26px;
+        height: 26px;
+        background: #2178d0;
+      }
+      .title {
+        font-size: 15px;
+        font-weight: 600;
+      }
+      .crumb {
+        color: #68788c;
+        font-size: 12px;
+      }
+      .userchip {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 12px;
+        color: #48586c;
+      }
+      .avatar {
+        width: 24px;
+        height: 24px;
+        background: #2178d0;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        font-weight: 700;
+      }
+      .stage {
+        max-width: 1340px;
+        margin: 18px auto;
+        padding: 0 20px;
+      }
+      .canvas-card {
+        position: relative;
+        height: 560px;
+        background-color: #fdfefe;
+        border: 1px solid #dde3ea;
+        box-shadow: 0 1px 3px rgba(34, 48, 63, 0.06);
+        background-image:
+          linear-gradient(rgba(33, 120, 208, 0.05) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(33, 120, 208, 0.05) 1px, transparent 1px),
+          linear-gradient(rgba(33, 120, 208, 0.09) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(33, 120, 208, 0.09) 1px, transparent 1px);
+        background-size:
+          25px 25px,
+          25px 25px,
+          100px 100px,
+          100px 100px;
+      }
+      .dimtext {
+        position: absolute;
+        left: 210px;
+        top: 120px;
+        width: 930px;
+        text-align: center;
+        font-size: 11px;
+        color: #8aa2bd;
+        letter-spacing: 0.5px;
+      }
+      .cab {
+        position: absolute;
+        left: 130px;
+        top: 170px;
+        width: 80px;
+        height: 180px;
+        border: 2px solid #c3cfdb;
+        background: #eceff5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .cab span {
+        font-size: 10px;
+        color: #93a5ba;
+        letter-spacing: 1px;
+      }
+      .bed {
+        position: absolute;
+        left: 210px;
+        top: 150px;
+        width: 930px;
+        height: 220px;
+        border: 2px solid #c3cfdb;
+        background: #f6f9fc;
+      }
+      .zone {
+        position: absolute;
+        left: 212px;
+        top: 152px;
+        width: 926px;
+        height: 216px;
+        border: 1px dashed #7fb1e4;
+        pointer-events: none;
+      }
+      .zonetag {
+        position: absolute;
+        left: 218px;
+        top: 340px;
+        font-size: 10px;
+        color: #4a90d9;
+        letter-spacing: 0.5px;
+      }
+      .item {
+        position: absolute;
+        border: 1px solid #94a3b8;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1px;
+      }
+      .item b {
+        font-size: 10.5px;
+        color: #334155;
+      }
+      .item s {
+        text-decoration: none;
+        font-size: 9px;
+        color: #64748b;
+        opacity: 0.85;
+      }
+      .sel {
+        outline: 2px solid #2178d0;
+        outline-offset: 0;
+      }
+      .hd {
+        position: absolute;
+        width: 7px;
+        height: 7px;
+        background: #fff;
+        border: 1px solid #2178d0;
+      }
+      .rotb {
+        position: absolute;
+        right: -8px;
+        bottom: -26px;
+        width: 16px;
+        height: 16px;
+        background: #fff;
+        border: 1px solid #2178d0;
+        color: #2178d0;
+        font-size: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+      .lockbadge {
+        position: absolute;
+        top: -9px;
+        left: -9px;
+        width: 16px;
+        height: 16px;
+        background: #5f7186;
+        color: #fff;
+        font-size: 9px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .err {
+        background: repeating-linear-gradient(45deg, #fdecec 0 5px, #fadada 5px 10px) !important;
+        border: 1.5px solid #d64545 !important;
+      }
+      .errbadge {
+        position: absolute;
+        top: -9px;
+        right: -9px;
+        width: 16px;
+        height: 16px;
+        background: #d64545;
+        color: #fff;
+        font-size: 10px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .panel {
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        width: 308px;
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid #dde3ea;
+        box-shadow: 0 4px 14px rgba(34, 48, 63, 0.14);
+      }
+      .p-head {
+        padding: 10px 14px;
+        border-bottom: 1px solid #e7ecf2;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .p-head h3 {
+        font-size: 12px;
+        letter-spacing: 0.8px;
+        color: #48586c;
+      }
+      .badge {
+        font-size: 10px;
+        font-weight: 700;
+        padding: 3px 7px;
+        letter-spacing: 0.5px;
+      }
+      .badge.red {
+        background: #fdecec;
+        color: #c03636;
+        border: 1px solid #d64545;
+      }
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .stat {
+        padding: 10px 8px;
+        text-align: center;
+        border-right: 1px solid #eef2f6;
+      }
+      .stat:last-child {
+        border-right: 0;
+      }
+      .stat b {
+        display: block;
+        font-size: 17px;
+        color: #22303f;
+      }
+      .stat span {
+        font-size: 10px;
+        color: #8296ac;
+        letter-spacing: 0.4px;
+      }
+      .p-row {
+        padding: 9px 14px;
+        border-top: 1px solid #eef2f6;
+      }
+      .lbl {
+        display: flex;
+        justify-content: space-between;
+        font-size: 11px;
+        color: #68788c;
+        margin-bottom: 5px;
+      }
+      .track {
+        height: 8px;
+        background: #eef2f6;
+        border: 1px solid #dde3ea;
+      }
+      .fill {
+        height: 100%;
+        display: block;
+      }
+      .alertbox {
+        margin: 10px 14px;
+        padding: 9px 11px;
+        background: #fdecec;
+        border: 1px solid #eec2c2;
+        color: #a33030;
+        font-size: 12px;
+        line-height: 1.45;
+      }
+      .actions {
+        display: flex;
+        gap: 8px;
+        padding: 12px 14px;
+        border-top: 1px solid #eef2f6;
+      }
+      .btn {
+        flex: 1;
+        padding: 8px 4px;
+        font-size: 12px;
+        cursor: pointer;
+        border: 1px solid #c6d2df;
+        background: #fff;
+        color: #3c4c60;
+      }
+      .btn:hover {
+        border-color: #2178d0;
+        color: #2178d0;
+      }
+      .btn.primary {
+        background: #2178d0;
+        border-color: #1d67b5;
+        color: #fff;
+      }
+      .btn.primary:hover {
+        background: #1d67b5;
+        color: #fff;
+      }
+      .btn.verify {
+        border-color: #e2b45c;
+        color: #a9761a;
+        background: #fdf6e7;
+      }
+      .rail {
+        margin-top: 16px;
+        background: #fff;
+        border: 1px solid #dde3ea;
+      }
+      .rail-head {
+        padding: 10px 16px;
+        border-bottom: 1px solid #e7ecf2;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .rail-head h3 {
+        font-size: 13px;
+      }
+      .hint {
+        font-size: 11px;
+        color: #8296ac;
+      }
+      .cards {
+        display: flex;
+        gap: 12px;
+        padding: 14px 16px;
+      }
+      .cc {
+        display: flex;
+        gap: 12px;
+        padding: 12px;
+        border: 1px solid #dde3ea;
+        width: 256px;
+        cursor: grab;
+        background: #fff;
+      }
+      .cc:hover,
+      .cc.hover {
+        border-color: #2178d0;
+        box-shadow: 0 2px 8px rgba(33, 120, 208, 0.18);
+      }
+      .thumb {
+        width: 64px;
+        height: 64px;
+        background: #f4f7fa;
+        border: 1px solid #e3e9f0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: none;
+      }
+      .mini {
+        border: 1px solid;
+      }
+      .cc .n {
+        font-weight: 600;
+        font-size: 13px;
+      }
+      .cc .m {
+        font-size: 11px;
+        color: #68788c;
+        margin-top: 3px;
+        font-family: Consolas, monospace;
+      }
+      .tagp {
+        display: inline-block;
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 0.6px;
+        padding: 2px 6px;
+        background: #eef2f6;
+        color: #68788c;
+        margin-top: 7px;
+      }
+      .morebtn {
+        margin-left: auto;
+        align-self: center;
+        padding: 8px 14px;
+        border: 1px dashed #b9c6d4;
+        background: none;
+        font-size: 12px;
+        color: #68788c;
+        cursor: pointer;
+      }
+      .morebtn:hover {
+        color: #2178d0;
+        border-color: #2178d0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="topbar">
+      <div class="logo"></div>
+      <div class="title">Loading Canvas</div>
+      <div class="crumb">Planning / <b>PLN-2024-0118</b></div>
+      <div class="userchip">
+        <div class="avatar">JD</div>
+        Jan de Vries · Planner
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="canvas-card">
+        <div class="dimtext">◀&nbsp;&nbsp;TRAILER 12.00 M&nbsp;&nbsp;▶</div>
+        <div class="cab"><span>CAB</span></div>
+        <div class="bed"></div>
+        <div class="zone"></div>
+        <div class="zonetag">LOAD ZONE · 12.00 × 2.45 M</div>
+
+        <div
+          class="item"
+          style="left: 224px; top: 164px; width: 90px; height: 60px; background: #99f6e4; border-color: #0d9488">
+          <b>EUR-A</b><s>850 KG</s>
+          <div class="lockbadge">🔒</div>
+        </div>
+        <div
+          class="item"
+          style="left: 321px; top: 164px; width: 90px; height: 60px; background: #bfdbfe; border-color: #2563eb">
+          <b>EUR-B</b><s>790 KG</s>
+        </div>
+        <div
+          class="item"
+          style="left: 418px; top: 164px; width: 90px; height: 60px; background: #ddd6fe; border-color: #7c3aed">
+          <b>EUR-C</b><s>910 KG</s>
+        </div>
+        <div
+          class="item sel"
+          style="left: 515px; top: 164px; width: 90px; height: 60px; background: #fde68a; border-color: #d97706">
+          <b>EUR-D</b><s>640 KG</s>
+          <div class="hd" style="left: -4px; top: -4px"></div>
+          <div class="hd" style="right: -4px; top: -4px"></div>
+          <div class="hd" style="left: -4px; bottom: -4px"></div>
+          <div class="hd" style="right: -4px; bottom: -4px"></div>
+        </div>
+        <div
+          class="item"
+          style="left: 612px; top: 215px; width: 60px; height: 90px; background: #fbcfe8; border-color: #db2777">
+          <b>EUR-G</b><s>880 KG · 90°</s>
+          <div class="rotb">⟳</div>
+        </div>
+        <div
+          class="item"
+          style="left: 682px; top: 174px; width: 60px; height: 45px; background: #d9f99d; border-color: #65a30d">
+          <b>BOX-E</b>
+        </div>
+        <div
+          class="item"
+          style="left: 747px; top: 179px; width: 60px; height: 45px; background: #fed7aa; border-color: #ea580c">
+          <b>BOX-F</b>
+        </div>
+        <div class="item err" style="left: 406px; top: 196px; width: 90px; height: 60px">
+          <b>EUR-H</b><s>1,200 KG</s>
+          <div class="errbadge">!</div>
+        </div>
+
+        <div class="panel">
+          <div class="p-head">
+            <h3>PLAN STATUS</h3>
+            <span class="badge red">1 ISSUE</span>
+          </div>
+          <div class="stats">
+            <div class="stat"><b>8/11</b><span>PLACED</span></div>
+            <div class="stat"><b>62%</b><span>FLOOR</span></div>
+            <div class="stat"><b>24%</b><span>PAYLOAD</span></div>
+          </div>
+          <div class="p-row">
+            <div class="lbl"><span>FLOOR USAGE</span><span>USED 62% · FREE 38%</span></div>
+            <div class="track"><i class="fill" style="width: 62%; background: #2178d0"></i></div>
+          </div>
+          <div class="p-row">
+            <div class="lbl"><span>PAYLOAD</span><span>5,830 / 24,000 KG</span></div>
+            <div class="track"><i class="fill" style="width: 24%; background: #e8a13c"></i></div>
+          </div>
+          <div class="alertbox">⚠ EUR-H overlaps EUR-C — resolve by shifting or rotating the item.</div>
+          <div class="actions">
+            <button class="btn primary">SAVE PLAN</button>
+            <button class="btn">LOAD PLAN</button>
+            <button class="btn">AUTO LOAD</button>
+            <button class="btn verify">VERIFY · 8/11</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="rail">
+        <div class="rail-head">
+          <h3>AVAILABLE CARGO</h3>
+          <span class="hint">Drag onto the canvas or click to place</span
+          ><button class="morebtn">+ OPEN FULL MANIFEST</button>
+        </div>
+        <div class="cards">
+          <div class="cc">
+            <div class="thumb">
+              <div class="mini" style="width: 54px; height: 36px; background: #99f6e4; border-color: #0d9488"></div>
+            </div>
+            <div>
+              <div class="n">EUR-I</div>
+              <div class="m">PALLET · 1.20 × 0.80 m</div>
+              <span class="tagp">750 KG</span>
+            </div>
+          </div>
+          <div class="cc hover">
+            <div class="thumb">
+              <div class="mini" style="width: 42px; height: 28px; background: #bfdbfe; border-color: #2563eb"></div>
+            </div>
+            <div>
+              <div class="n">BOX-J</div>
+              <div class="m">BOX · 0.60 × 0.40 m</div>
+              <span class="tagp">150 KG</span>
+            </div>
+          </div>
+          <div class="cc">
+            <div class="thumb">
+              <div class="mini" style="width: 48px; height: 48px; background: #ddd6fe; border-color: #7c3aed"></div>
+            </div>
+            <div>
+              <div class="n">CRATE-K</div>
+              <div class="m">CRATE · 1.00 × 1.00 m</div>
+              <span class="tagp">480 KG</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

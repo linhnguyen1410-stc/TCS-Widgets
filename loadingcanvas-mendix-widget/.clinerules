@@ -1,0 +1,363 @@
+# Coding Rules
+
+## Architecture Rules
+
+See [ARCHITECTURE.md](ARCHITECTURE.md) for the complete architecture documentation including layer structure, dependency direction, layer responsibilities, and import patterns.
+
+## Business Rules
+
+See [BUSINESS_RULES.md](BUSINESS_RULES.md) for the business rules (BR-01 through BR-47) that govern truck loading and packing planning.
+
+**Key principles:**
+
+- **Dependency direction**: Presentation → State → Domain → Core; Infrastructure → Domain → Core
+- **UI must never depend directly on Mendix runtime APIs** — use infrastructure layer
+- **Domain modules must not import React, Mendix APIs, browser globals, or widget framework APIs**
+- **Presentation to Infrastructure is allowed only from the composition root** (`src/LoadingCanvas.tsx`, `src/presentation/widget/LoadingCanvas.container.tsx`)
+- **Interaction machine** - `CanvasController` (State layer) owns the manager, dispatcher, and interaction engines; hooks are thin React adapters over it
+
+### General Rules
+
+- Mappers convert Mendix/runtime data into domain models and vice versa.
+- Do not introduce a new dependency between existing layers without evaluating the architectural impact.
+- Do not move business logic into a lower-level infrastructure layer to simplify a local implementation.
+- Do not bypass an existing adapter, service, mapper, or domain engine when an appropriate abstraction exists.
+- Avoid circular dependencies between features.
+- Shared modules must not depend on feature-specific modules.
+- Feature modules expose a small public API through index.ts; avoid importing internal implementation details from other features.
+
+## Change Impact & Scope
+
+Before modifying code, identify: the feature/domain, architectural layer, existing callers/consumers, related types/interfaces, adapters/mappers, tests, state lifecycle, async/concurrency, Mendix runtime, and upgradeability implications.
+
+- Do not modify code immediately when the change affects multiple architectural layers.
+- Prefer the smallest change that satisfies the requirement without violating existing boundaries.
+- Do not refactor unrelated code, rename files/functions/variables/modules/public APIs, or rewrite working code unless required by the task.
+- Do not introduce a new abstraction when an existing one can be safely reused.
+- Keep changes minimal and localized; separate bug fixes from architectural refactoring.
+- If a larger refactoring is necessary, explain the reason and identify the affected scope before implementing.
+
+## Existing Code First
+
+Before creating a new component, hook, service, adapter, mapper, utility, type, or constant, search the repository for an existing implementation to reuse or extend. Do not create duplicate abstractions with similar responsibilities.
+
+## Definition of Done
+
+A change is not complete until:
+
+- TypeScript compilation, lint, and widget build succeed.
+- Relevant unit/integration tests pass.
+- No new TypeScript or lint errors are introduced.
+- No existing architectural boundary is violated.
+- No unused imports or dead code are introduced.
+- Error handling is implemented for failure paths.
+- Async operations have appropriate cancellation/stale-result protection.
+- Mendix-specific behavior is tested when the change touches adapters.
+- The final change is reviewed for unnecessary complexity.
+
+## Verification Rules
+
+After modifying code:
+
+1. Run the most relevant targeted tests first.
+2. Run TypeScript/type checking, then lint, then the widget build.
+3. Run broader tests when the change affects shared modules or infrastructure.
+4. Inspect the final diff and verify no unrelated files were modified.
+
+Do not claim a change is working without performing the available verification steps.
+
+## Bug Fixing
+
+When fixing a bug or error:
+
+- Identify the root cause before implementing the fix; do not fix only the observed symptom if the underlying boundary or contract is incorrect.
+- Prefer correcting an invalid contract, type, lifecycle, receiver, dependency, or boundary.
+- Do not suppress exceptions or add broad try/catch blocks to hide the failure.
+- Do not add fallback behavior unless the expected alternative behavior is defined; avoid speculative fallbacks without evidence.
+- Add or update a regression test whenever practical.
+- Verify related code paths that use the same API or abstraction.
+
+## Mendix Runtime Compatibility
+
+- Treat Mendix runtime APIs as external infrastructure contracts.
+- Do not assume browser, Node.js, Dojo, and Mendix runtime APIs are interchangeable; do not use browser APIs as substitutes for Mendix runtime APIs.
+- Do not infer Mendix Domain Model names from database table names or runtime object behavior from serialized JSON.
+- Verify runtime-specific behavior against the actual Mendix API contract or existing working adapter implementation.
+- Keep Mendix-specific workarounds isolated in adapter/runtime modules; never spread them into domain or UI code.
+
+## Upgradeability & Dependencies
+
+- Isolate framework-specific APIs behind adapters; do not expose Mendix runtime types throughout the domain layer.
+- Avoid deprecated APIs when an actively supported alternative exists; do not rely on undocumented runtime behavior.
+- Keep third-party dependencies isolated behind small interfaces when practical.
+- Do not add a dependency when the requirement can be implemented using existing project dependencies or standard platform APIs; search package.json and the codebase for equivalent functionality first.
+- Prefer small, mature, actively maintained dependencies; avoid dependencies that duplicate existing functionality.
+- Do not upgrade unrelated dependencies or as part of an unrelated feature/bug fix; do not modify package-lock.json manually.
+- When upgrading a dependency, identify breaking changes and affected modules before modifying code; keep migration-sensitive code localized.
+- After dependency changes, run install, type check, lint, tests, and build.
+- Document the reason for non-obvious dependencies.
+
+## State Ownership & Single Source of Truth
+
+See [ARCHITECTURE.md](ARCHITECTURE.md) for state ownership guidelines. Every state value must have a clear owner — do not duplicate the same state across multiple layers without a synchronization strategy.
+
+## AI Agent Rules
+
+- Inspect existing architecture and search for existing implementations before modifying code.
+- Do not invent APIs, modules, entity names, attributes, associations, or runtime behavior.
+- Do not assume a file, function, package, or module exists without verifying it.
+- Do not fabricate test results or claim a build/test passed unless it was actually executed.
+- Do not silently change requirements or expand task scope without a technical reason.
+- Preserve existing conventions unless they conflict with an explicit rule.
+- When uncertain about a runtime-specific contract, inspect the existing adapter, types, tests, or project documentation before implementing.
+- Prepare all files, context need and details steps in plan mode so that can act mode in low token AI model: resolve correctness-critical context, dependencies, rules, invariants, contracts, tests, and risks before implementation. Use repository evidence, not assumptions.
+
+## Core Philosophy (Smart Zone & Vertical Slices)
+
+- NEVER attempt to build a large feature all at once. Create plan consist of many small tasks, always plan in max details
+- Work in **Micro Vertical Slices**: each task must be small, self-contained, and for only a tiny piece of functionality.
+- Keep modifications scoped to a minimum number of files per task (ideally 2-5 files max). Do not touch unrelated files.
+- Auto continue to next slice after verification is done
+- When ask for select options, always state best option and why
+- report others bug found while working
+
+## Strict Prohibitions
+
+- DO NOT mix multiple features or multiple vertical slices into a single execution step. Finish one atomic slice completely and make sure it builds successfully before moving on.
+
+## Final Diff Review
+
+Before completing a task, inspect the final diff and remove unrelated modifications, unused imports, temporary debugging code, speculative abstractions, and dead code. Verify that only intended files were modified.
+
+## Forbidden Patterns
+
+- UI → mx.data, mx.ui, or localStorage for business persistence
+- Domain → Mendix or React
+- New dependencies without justification
+- Unrelated refactoring
+- Invented APIs or runtime behavior
+- Unverified claims about build/test status
+
+## Maintainability
+
+- Components should stay under 300–500 lines; split UI, domain logic, adapter, and state when the limit is exceeded.
+- All Mendix integrations go through the service/adapter layer; UI only receives view models and callbacks.
+- Use shared TypeScript types for datasource, MxObject, domain model, and view model; do not overuse `unknown`/`any` when a type guard can be created.
+- Reusable logic must live in a custom hook or domain/service module, not embedded in JSX.
+- Do not hard-code entity, association, XPath, action ID, default sizes, or storage keys in UI; consolidate them into constants/config.
+- Centralized error handling with contextual error messages; do not swallow errors silently.
+- Unit tests for adapter/parser, data mapping, serialization, and important business rules.
+- Organize directories by feature/domain; keep the boundary between Mendix data, domain model, and UI view model.
+- Business logic must not depend on `window.*` or host global state. Only the adapter/runtime bridge may access globals and must have a fallback/mock for dev/test.
+
+## Comments and token saving
+
+- Always write concise, clear code comments explaining _why_, in English.
+- Do NOT create JSDoc (do not use `/** ... */` for functions, classes, interfaces, or types).
+- Only use short comments (`//`) when explaining business intent or a mandatory workaround.
+- Do not comment what the code already makes clear; do not add banners or decorative comments.
+- Keep code concise with self-describing variable/function names; do not use comments as a substitute for clear design.
+
+## React and async data rules
+
+- Mendix datasource props can be an array, a datasource wrapper (`item`), or an MxObject; normalize once at the boundary before passing into the service.
+- Do not infer GUID from `String(object)` or read only `.guid`; use `getGuid()`/`getGUID()` first, then fall back to plain object `guid`/`id`.
+- Every `useEffect` with async work must have cancellation/stale-result guards and proper cleanup; do not set state after the component unmounts or when an old request completes after a newer one.
+- When a dependency is an object/array from a datasource, avoid infinite reloads caused by identity changes; use a stable GUID/primitive key.
+- `useMemo`/`useCallback` must not hide the fact that the state manager/engine is being re-initialized. When the initial input changes, reset state according to a clear rule, not just by comparing `length`.
+- Global event listeners must be registered in a hook, removed with the correct handler in cleanup, and only active when needed (e.g., while dragging).
+- Optional callbacks must be checked before calling; UI errors must not break the entire widget.
+
+## Mendix 10 React TS pitfalls (errors encountered - avoid repeating)
+
+### 1. `this` context of MxObject methods
+
+- Do NOT assign `obj.set` or `obj.get` to a temporary variable and call it later (`const setSafe = obj.set; setSafe(...)`).
+- Always call directly on the object: `obj.set(attr, value)` or use `.call(obj, attr, value)`.
+- Do not create helpers that accept a detached method; the helper must accept the object and call the method with the correct receiver.
+- Casting then calling a detached method is forbidden, including `const setSafe = obj.set as (...) => void` or `(obj.set as Fn)(...)`; TypeScript casts do not preserve runtime `this`.
+- Do not wrap the `this is undefined` error in `try/catch` to continue saving. Fix the receiver first, then handle business errors according to policy.
+- Error encountered: `can't access property "_setContent", this is undefined`.
+
+### 2. Detecting MxObject and reading associations
+
+- Only call `get()`/`set()` when the object has both `get` and `getAttributes` as functions; plain objects must go through the fallback mapper.
+- Associations are not in `getAttributes()`; read them separately with `mxObject.get("AssociationName")` and handle the result as an object/GUID as appropriate.
+- Do not access associations by DB table name or a field guessed from serialized JSON.
+- When mapping a list from `loadMendixList()`, check each element before calling MxObject APIs.
+- Error encountered: `can't access property "has", this is undefined` caused by calling an MxObject method on a plain object or losing `this`.
+
+### 3. GUID and datasource reference
+
+- Check in order `getGuid()`, `getGUID()`, then fall back to `guid`/`id`; do not access `.guid` directly on an MxObject.
+- Do not use the wrapper/datasource GUID in place of the entity GUID; log type and value at the boundary when debugging.
+- When batch loading, keep the mapping between input GUID and output object; do not use index if the API may return a different order.
+
+### 4. XPath and association constraint
+
+See [docs/MENDIX_ENTITY.md](docs/MENDIX_ENTITY.md) for the entity design, XPath queries, and association names.
+
+- Do NOT use complex XPath association constraints like `//Entity[module$entity_assoc = 'guid']`; they easily cause HTTP 560.
+- Prefer fetching with a simple XPath (`//Module.Entity`), then filter the association in JavaScript using the MxObject API.
+- If multiple association names must be tried, the candidate list must live in the adapter, log the final error, and be testable; do not swallow the whole error making it look like there is no data.
+- Association names in `get()`/`set()` are the Domain Model names (e.g., `PackingPlan_TruckSelection`), not DB table names (`tcsloadingmeter$packingplan_truckselection`).
+
+### 5. Decimal attributes and Big.js
+
+- Mendix Decimal attributes like `PositionX`, `PositionY`, `Width`, `Height`, `HeightMeters`, `WeightKg` do not accept plain JavaScript numbers.
+- Before `set()`, convert using the Big.js runtime; do not pass decimal numbers directly.
+
+# Encourage using the Decimal constructor from MxObject
+
+use-decimal-constructor:
+description: "Encourage using the Decimal constructor from the MxObject runtime instead of calling a module."
+severity: warning
+pattern: "window.require\\(['\\\"]big.js['\\\"]\\)"
+
+# Domain layer framework isolation
+
+domain-framework-isolation:
+description: "Domain layer must not import React, Mendix APIs, browser globals, or widget framework APIs."
+severity: error
+pattern: "src/domain/._from._['\"]react['\"]|src/domain/._from._['\"]mendix['\"]|src/domain/.*window\\.|src/domain/.*document\\."
+
+# Core layer zero dependencies
+
+core-zero-dependencies:
+description: "Core layer must not import from other project layers."
+severity: error
+pattern: "src/core/._from._['\"]\\.\\./(domain|state|infrastructure|presentation)/"
+
+# Infrastructure Mendix gateway
+
+infrastructure-mendix-gateway:
+description: "Only infrastructure layer can import Mendix runtime APIs."
+severity: error
+pattern: "src/(domain|state|presentation)/._from._['\"]mendix['\"]"
+
+# Presentation Mendix isolation
+
+presentation-mendix-isolation:
+description: "Presentation layer must not directly call Mendix APIs."
+severity: error
+pattern: "src/presentation/._from._['\"]mendix['\"]"
+
+# Infrastructure must not depend on State
+
+infrastructure-no-state:
+description: "Infrastructure must never import from the State layer; persist the PackingPlanState slice, not the live-store shape."
+severity: error
+pattern: "src/infrastructure/._from._['\"]\\.\\./(\\.\\.)*)*state/"
+
+- Do not call `window.require("big/big")` or `window.require("big.js")`: the Mendix Dojo loader can throw `undefinedModule` and stop the debugger before the error is even caught.
+- When creating a new Mendix object, get the native Decimal constructor from the MxObject's own default value (`mxObject.get(attribute).constructor`) and create the Decimal with that constructor. Do not use a separately bundled/imported `big.js` because Mendix validation may reject a different instance even with the same API/value.
+- If a Decimal attribute has no native default value, borrow the Decimal constructor from another Decimal attribute on the same MxObject (e.g., `PositionX`, `PositionY`, `Length`, `Width`, `LengthMeters`, `WidthMeters`, `WeightKg`); all Decimal attributes on the same object share the same Mendix Decimal constructor. Only when no constructor can be found, report a contextual error and stop the save; use the local `big.js` package only in dev/test.
+- Error encountered: `PackingPlanItem cargo-...: HeightMeters has no native Mendix Decimal default value` because `LengthMeters`/`WidthMeters`/`WeightKg` have no default value on a newly created object; fixed by borrowing the constructor from `PositionX`/`PositionY`/`Length`/`Width`.
+- When reading Decimal, normalize Big.js to a number in the mapper before running domain calculations.
+- Error encountered: `Cannot set invalid value '0.386...' to MxObject attribute 'PositionX'` caused by passing a number or a Big.js instance that does not belong to the Mendix runtime.
+- Error encountered: `Cannot set invalid value '0.7881818181818182' to MxObject attribute 'PositionX'` caused by passing a long decimal number directly to `set()` without going through the native Decimal constructor.
+- Standard procedure when setting Decimal (already applied in `mendixDataAdapter.ts`):
+  1. Check `Number.isFinite(value)`; if it is not a finite number, report a contextual error and stop.
+  2. Get the native Decimal constructor from `obj.get(attribute).constructor`; if the attribute has no default value, try borrowing the constructor from other Decimal attributes on the same object (`PositionX`, `PositionY`, `Length`, `Width`, `LengthMeters`, `WidthMeters`, `WeightKg`); only when all are missing, report an error and stop the save.
+  3. Normalize with `new Big(value).round(8, Big.roundHalfUp).toFixed(8)` (constant `MENDIX_DECIMAL_SCALE = 8`).
+  4. Create the instance `new Decimal(normalizedValue)` and only then call `obj.set(attribute, instance)`.
+- Do not use `toBig()` (which returns a Big.js instance) as the final value for `set()`; use it only to normalize/round before creating the native Decimal.
+- The Decimal set helper must be private in the adapter and tested indirectly through `savePackingPlan` or through a mock MxObject whose `get()` returns a default Decimal value.
+
+### 6. Associations and values
+
+- Associations must be set with the exact Domain Model name; do not set the DB name as a default solution.
+- **Must use the correct module-prefixed Domain Model name in `set()`/`get()`** (e.g., `TCSLoadingMeter.PackingPlanItem_TransportOrder`); missing the prefix (`PackingPlanItem_TransportOrder`) will set successfully but the value stays null and is not saved to the DB.
+- **Error encountered**: set `"PackingPlanItem_TransportOrder"` (missing prefix) -> `x.get("PackingPlanItem_TransportOrder")` returns null; fixed with `"TCSLoadingMeter.PackingPlanItem_TransportOrder"` and the save succeeded.
+- **When reading an association**, do NOT read from `toPlainObject()`; associations are not in `getAttributes()`, read them separately with `mxObject.get("AssociationName")` + `isMxObject()` + `getObjectGuid()`.
+- **Error encountered**: loading a plan read `raw.TransportOrder` from `toPlainObject()` -> returned `undefined`, the loaded item id fallback became the PackingPlanItem GUID instead of the TransportOrder GUID, causing the pallet list filter to mismatch. Fixed by reading the association directly via `mxObject.get()`.
+- Do not pass a plain GUID to an association if the Mendix version/entity requires an MxObject reference; do not save without verifying the API.
+- Every attempt with multiple field/association names must record a contextual error; do not use `catch { /* ignore */ }` for important data errors.
+- **Consistent ID format**: When comparing IDs between loaded items and the pallet list, they may differ due to the "cargo-" prefix; normalize IDs (strip the prefix) before comparing.
+- **Error encountered**: loaded item ID = `cargo-96264442035466915` (TransportOrder GUID) while pallet list ID = `cargo-17169973584497070`; caused by the load fallback using the PackingPlanItem GUID instead of the TransportOrder GUID; fixed by reading the association directly.
+
+### 7. Save/commit and data errors
+
+See [docs/MENDIX_ENTITY.md](docs/MENDIX_ENTITY.md) for the save/load flow details.
+
+- The save flow must have a clear order: find/create the plan, delete old items, create new items, commit; if an intermediate step fails, do not report the save as successful.
+- Do not call the `onSave` callback after a failed save; distinguish between Mendix results and dev fallback.
+- Do not use `localStorage` as a silent fallback in production when the primary data is Mendix; the fallback must be configured and its status clearly displayed.
+- Do not ignore errors from each `set()` on required fields; report which field failed and stop/rollback according to policy.
+
+### 8. Debugging and verification
+
+- When a Mendix error occurs, check the entity name, attribute/association name in the Domain Model, the runtime type of the object, the actual GUID, and the Decimal type before fixing the UI.
+- After changing adapters or types, run lint, unit tests, and build; do not only check TypeScript compilation.
+- Do not fix by adding many candidates/fallbacks before the root cause is identified; every fallback must be bounded, log useful information, and have a regression test.
+
+# Forbid using non-existent modules
+
+no-undefined-modules:
+description: "Forbid using non-existent modules such as 'big/big' or 'big.js'."
+severity: error
+pattern: "require\\(['\"]big/big['\"]\\)|require\\(['\"]big.js['\"]\\)"
+
+# Encourage using the Decimal constructor from MxObject
+
+use-decimal-constructor:
+description: "Encourage using the Decimal constructor from the MxObject runtime instead of calling a module."
+severity: warning
+pattern: "window.require\\(['\"]big.js['\"]\\)"
+
+## Code Formatting (single source: Prettier)
+
+- Use Prettier for formatting; key settings: `printWidth` 120, `tabWidth` 2, `semi` true, `trailingComma` "es5", `bracketSameLine` true.
+
+## Context Constraints
+
+- Exclude `__tests__` and `node_modules` directories from workspace searches and general context analysis unless explicitly asked by the user.
+
+# Documentation Sync Rules
+
+doc-sync-required:
+description: "Any change to src/** must update affected docs or include docs: none (<reason>) in CHANGELOG."
+severity: error
+pattern: ""
+
+doc-facts-guard:
+description: "README/ARCHITECTURE must not contain version literals; UPGRADE_GUIDE is the single version source."
+severity: error
+pattern: ""
+
+doc-links-guard:
+description: "Every backticked repo path and markdown link in *.md must resolve."
+severity: error
+pattern: ""
+
+## CHANGELOG Maintenance
+
+Every change that modifies `src/**`, `docs/**`, `scripts/**`, or register files (`BUGLOG.md`, `DEBT.md`, `docs/adr/*`) **must** add a `CH-####` entry to `CHANGELOG.md` in the same change. The entry must include all required fields:
+
+- `id`: `CH-####` (sequential, never reused)
+- `date`: ISO date of the change
+- `type`: `feat|fix|refactor|remove|docs|build`
+- `layer`: `core|domain|state|infrastructure|presentation|build|docs`
+- `title`: imperative _what_
+- `why`: the reason (never "N/A", use `housekeeping` honestly)
+- `files`: repo-root-relative paths changed (validated by guard)
+- `commits`: short SHAs from this change (`git show` for diff)
+- `rules`: `BR-##` affected (`none`)
+- `fixes`: `B-####` closed (`none`)
+- `debt`: `none|created D-#|resolved D-#|open D-#`
+- `verify`: spec path or command that proves it
+- `upgrade`: `none` or migration pointer
+- `breaking`: `yes|no`
+- `supersedes`: `CH-####` if replacing a prior design
+- `note`: trap/lesson (optional)
+
+Workflow:
+
+1. Before coding: inspect `scripts/docs-rules.mjs` and run `npm run docs:check` when validating documentation impact
+2. Code + required docs in the SAME change
+3. Author required CHANGELOG/BUGLOG/DEBT entries according to `scripts/docs-rules.mjs`
+4. Run `npm run docs:sync` to refresh generated regions
+5. Run `npm run docs:check` — gate for documentation consistency
+6. `npm test && npm run build`
+
+Reference by ID, **never restate** register content in the changelog.

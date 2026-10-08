@@ -1,0 +1,114 @@
+{
+  "name": "loadingcanvas",
+  "widgetName": "LoadingCanvas",
+  "version": "1.0.0",
+  "description": "Mendix pluggable widget for interactive truck loading and packing. Supports pallet and box positioning, 90° rotation, grid snapping, real-time validation, and loading/saving packing plans.",
+  "copyright": "STCVN © 2026. All rights reserved.",
+  "author": "Nam",
+  "engines": {
+    "node": ">=16"
+  },
+  "license": "Apache-2.0",
+  "config": {
+    "projectPath": "D:\\Mendix\\TCSTransport-main",
+    "mendixHost": "http://localhost:8882",
+    "developmentPort": 3000
+  },
+  "packagePath": "stcvn",
+  "scripts": {
+    "start": "pluggable-widgets-tools start:server",
+    "dev": "pluggable-widgets-tools start:web",
+    "build": "pluggable-widgets-tools build:web",
+    "lint": "pluggable-widgets-tools lint",
+    "lint:fix": "pluggable-widgets-tools lint:fix",
+    "test": "pluggable-widgets-tools test:unit:web:enzyme-free",
+    "test:unit": "pluggable-widgets-tools test:unit:web:enzyme-free",
+    "test:contracts": "pluggable-widgets-tools test:unit:web:enzyme-free --testPathPattern=\"__tests__/contracts\"",
+    "test:integration": "pluggable-widgets-tools test:unit:web:enzyme-free --testPathPattern=\"__tests__/integration\"",
+    "test:scripts": "vitest run scripts/__tests__",
+    "test:coverage": "pluggable-widgets-tools test:unit:web:enzyme-free --coverage",
+    "check:imports": "node scripts/check-imports.mjs",
+    "check:docs": "node scripts/check-doc-links.mjs",
+    "check:changelog": "node scripts/check-changelog.mjs",
+    "check:contracts": "npm run test:contracts",
+    "check:integration": "npm run test:integration",
+    "check:regression": "node scripts/check-regression-coverage.mjs",
+    "docs:sync": "node scripts/docs-sync.mjs",
+    "docs:check": "node scripts/docs-check.mjs",
+    "prerelease": "npm run lint",
+    "release": "pluggable-widgets-tools release:web",
+    "prebuild": "npm run docs:check",
+    "test:env": "powershell -ExecutionPolicy Bypass -File ./start-test-env.ps1",
+    "test:env:verify": "powershell -ExecutionPolicy Bypass -File ./start-test-env.ps1 -VerifyOnly",
+    "db:query": "powershell -c \"psql postgresql://mendix:mendix@localhost:5432/mendix -c \\\"$env:QUERY\\\"\"",
+    "db:tech-details": "psql postgresql://mendix:mendix@localhost:5432/mendix -c \"SELECT id, nameresource, combinationlength, combinationwidth FROM datamodelmodule$technicaldetails WHERE combinationlength > 0 OR combinationwidth > 0;\"",
+    "db:trucks": "psql postgresql://mendix:mendix@localhost:5432/mendix -c \"SELECT ts.id, ts.truckindex, td.nameresource, td.combinationlength, td.combinationwidth FROM tcsloadingmeter$truckselection ts LEFT JOIN tcsloadingmeter$truckselection_resourceinstance tsri ON ts.id = tsri.tcsloadingmeter$truckselectionid LEFT JOIN tcstransportmodule$resourceinstance ri ON tsri.tcstransportmodule$resourceinstanceid = ri.id LEFT JOIN tcstransportmodule$resourceinstance_resource rir ON ri.id = rir.tcstransportmodule$resourceinstanceid LEFT JOIN datamodelmodule$resource r ON rir.datamodelmodule$resourceid = r.id LEFT JOIN datamodelmodule$resource_technicaldetails rtd ON r.id = rtd.datamodelmodule$resourceid LEFT JOIN datamodelmodule$technicaldetails td ON rtd.datamodelmodule$technicaldetailsid = td.id ORDER BY ts.truckindex;\""
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.5",
+    "@mendix/pluggable-widgets-tools": "^10.0.2",
+    "@rollup/plugin-typescript": "^6.0.0",
+    "@types/big.js": "^6.0.2",
+    "@types/jest": "^29.5.0",
+    "@typescript-eslint/eslint-plugin": "^8.67.0",
+    "@typescript-eslint/parser": "^8.67.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-jest": "^29.16.1",
+    "eslint-plugin-prettier": "^5.5.6",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "globals": "^14.0.0",
+    "pretty-format": "29.7.0",
+    "typescript": "^5.9.3",
+    "vitest": "^1.6.1"
+  },
+  "dependencies": {
+    "big.js": "^6.2.2",
+    "classnames": "^2.5.1"
+  },
+  "jest": {
+    "testMatch": [
+      "**/__tests__/**/*.test.[jt]s?(x)",
+      "**/__tests__/**/*.spec.[jt]s?(x)",
+      "**/__tests__/contracts/**/*.test.[jt]s?(x)",
+      "**/__tests__/contracts/**/*.spec.[jt]s?(x)",
+      "**/__tests__/integration/**/*.test.[jt]s?(x)",
+      "**/__tests__/integration/**/*.spec.[jt]s?(x)",
+      "**/?(*.)+(test|spec).[jt]s?(x)"
+    ],
+    "snapshotSerializers": [],
+    "collectCoverage": false,
+    "coverageThreshold": {
+      "global": {
+        "statements": 80,
+        "branches": 70,
+        "functions": 80,
+        "lines": 80
+      },
+      "./src/core/": {
+        "statements": 93,
+        "branches": 87,
+        "functions": 92,
+        "lines": 93
+      },
+      "./src/domain/": {
+        "statements": 97,
+        "branches": 94,
+        "functions": 98,
+        "lines": 97
+      }
+    }
+  },
+  "overrides": {
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "@types/react": "18.2.0",
+    "@types/react-dom": "18.2.0"
+  },
+  "resolutions": {
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "@types/react": "18.2.0",
+    "@types/react-dom": "18.2.0"
+  }
+}

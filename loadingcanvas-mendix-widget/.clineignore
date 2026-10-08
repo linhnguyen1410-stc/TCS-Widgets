@@ -1,0 +1,32 @@
+# Dependencies
+node_modules/
+dist/
+build/
+
+# Logs
+*.log
+npm-debug.log*
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+
+# Large data files
+
+# Test files (if not needed) # COMMENTED OUT
+# *.test.*
+# *.spec.*
+# __tests__/
+
+# Type definitions
+
+
+# Documentation
+

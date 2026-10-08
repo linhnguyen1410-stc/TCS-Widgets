@@ -1,0 +1,715 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Option C — Technical Blueprint (CAD)</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        border-radius: 0;
+      }
+      button {
+        font: inherit;
+      }
+      body {
+        font-family: Consolas, "Courier New", monospace;
+        background: #10304f;
+        color: #cfe3f5;
+        font-size: 12px;
+      }
+      .sheet {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        min-width: 1320px;
+      }
+      .dhead {
+        display: flex;
+        border-bottom: 1px solid rgba(207, 227, 245, 0.4);
+        flex: none;
+      }
+      .cell {
+        padding: 8px 14px;
+        border-right: 1px solid rgba(207, 227, 245, 0.4);
+        letter-spacing: 1px;
+        font-size: 11px;
+      }
+      .cell b {
+        color: #fff;
+      }
+      .cell.rev {
+        margin-left: auto;
+        border-left: 1px solid rgba(207, 227, 245, 0.4);
+        border-right: 0;
+      }
+      .main {
+        flex: 1;
+        display: flex;
+        min-height: 0;
+      }
+      .manifest {
+        width: 300px;
+        flex: none;
+        border-right: 1px solid rgba(207, 227, 245, 0.4);
+        overflow: auto;
+      }
+      .m-head {
+        padding: 8px 12px;
+        border-bottom: 1px solid rgba(207, 227, 245, 0.4);
+        letter-spacing: 2px;
+        color: #8fb4d6;
+        font-size: 11px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th {
+        font-size: 10px;
+        color: #8fb4d6;
+        text-align: left;
+        padding: 6px 8px;
+        border-bottom: 1px solid rgba(207, 227, 245, 0.4);
+        letter-spacing: 1px;
+        font-weight: 400;
+      }
+      td {
+        padding: 6px 8px;
+        border-bottom: 1px solid rgba(207, 227, 245, 0.18);
+        white-space: nowrap;
+      }
+      tr:hover td {
+        background: rgba(255, 255, 255, 0.05);
+      }
+      tr.sel td {
+        background: #ffd166;
+        color: #10304f;
+        font-weight: 700;
+      }
+      tr.sel td .st {
+        color: #10304f;
+        border-color: #10304f;
+      }
+      tr.errr td {
+        color: #ffb3b3;
+      }
+      tr.errr td:first-child {
+        border-left: 3px solid #ff6b6b;
+      }
+      .st {
+        display: inline-block;
+        padding: 1px 5px;
+        border: 1px solid;
+        font-size: 9px;
+        letter-spacing: 1px;
+      }
+      .st.ok {
+        color: #7bed9f;
+        border-color: #7bed9f;
+      }
+      .st.err {
+        color: #ff6b6b;
+        border-color: #ff6b6b;
+      }
+      .st.tbd {
+        color: #8fb4d6;
+        border-color: #4a6f93;
+      }
+      .m-foot {
+        padding: 10px 12px;
+        color: #8fb4d6;
+        font-size: 10px;
+        letter-spacing: 1px;
+        line-height: 1.8;
+      }
+      .draw {
+        position: relative;
+        flex: 1;
+        min-width: 0;
+        overflow: hidden;
+        background-image:
+          linear-gradient(rgba(207, 227, 245, 0.05) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(207, 227, 245, 0.05) 1px, transparent 1px),
+          linear-gradient(rgba(207, 227, 245, 0.12) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(207, 227, 245, 0.12) 1px, transparent 1px);
+        background-size:
+          25px 25px,
+          25px 25px,
+          100px 100px,
+          100px 100px;
+      }
+      .bed {
+        position: absolute;
+        left: 250px;
+        top: 120px;
+        width: 880px;
+        height: 190px;
+        border: 1.5px solid #cfe3f5;
+        background: rgba(207, 227, 245, 0.03);
+      }
+      .cab {
+        position: absolute;
+        left: 170px;
+        top: 138px;
+        width: 80px;
+        height: 154px;
+        border: 1.5px solid rgba(207, 227, 245, 0.8);
+        background: rgba(207, 227, 245, 0.06);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .cab span {
+        font-size: 9px;
+        color: #7ba2c4;
+        letter-spacing: 2px;
+      }
+      .cl {
+        position: absolute;
+        left: 251px;
+        top: 214px;
+        width: 878px;
+        height: 0;
+        border-top: 1px dashed rgba(207, 227, 245, 0.35);
+      }
+      .dima {
+        position: absolute;
+        left: 250px;
+        top: 98px;
+        width: 880px;
+        height: 1px;
+        background: #ffd166;
+      }
+      .dima:before {
+        content: "";
+        position: absolute;
+        left: -1px;
+        top: -4px;
+        border-top: 4px solid transparent;
+        border-bottom: 4px solid transparent;
+        border-right: 8px solid #ffd166;
+      }
+      .dima:after {
+        content: "";
+        position: absolute;
+        right: -1px;
+        top: -4px;
+        border-top: 4px solid transparent;
+        border-bottom: 4px solid transparent;
+        border-left: 8px solid #ffd166;
+      }
+      .diml {
+        position: absolute;
+        left: 50%;
+        top: -9px;
+        transform: translateX(-50%);
+        background: #10304f;
+        color: #ffd166;
+        padding: 0 8px;
+        font-size: 10px;
+        letter-spacing: 1px;
+      }
+      .dimb {
+        position: absolute;
+        left: 1142px;
+        top: 120px;
+        width: 1px;
+        height: 190px;
+        background: #ffd166;
+      }
+      .dimb:before {
+        content: "";
+        position: absolute;
+        top: -1px;
+        left: -4px;
+        border-left: 4px solid transparent;
+        border-right: 4px solid transparent;
+        border-bottom: 8px solid #ffd166;
+      }
+      .dimb:after {
+        content: "";
+        position: absolute;
+        bottom: -1px;
+        left: -4px;
+        border-left: 4px solid transparent;
+        border-right: 4px solid transparent;
+        border-top: 8px solid #ffd166;
+      }
+      .dimlv {
+        position: absolute;
+        left: 1150px;
+        top: 50%;
+        transform: translateY(-50%);
+        writing-mode: vertical-rl;
+        color: #ffd166;
+        font-size: 10px;
+        letter-spacing: 1px;
+      }
+      .tk {
+        position: absolute;
+        top: 120px;
+        width: 1px;
+        height: 6px;
+        background: rgba(207, 227, 245, 0.65);
+      }
+      .tkl {
+        position: absolute;
+        top: 127px;
+        font-size: 8px;
+        color: #7ba2c4;
+        transform: translateX(-50%);
+      }
+      .it {
+        position: absolute;
+        border: 1px solid #cfe3f5;
+        background: rgba(207, 227, 245, 0.07);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+      .iid {
+        position: absolute;
+        top: 2px;
+        left: 4px;
+        font-style: normal;
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        color: #eaf4fd;
+      }
+      .idim {
+        font-size: 9px;
+        color: #9cc3e2;
+        letter-spacing: 0.5px;
+      }
+      .ikg {
+        position: absolute;
+        bottom: 2px;
+        right: 4px;
+        font-size: 8px;
+        color: #9cc3e2;
+      }
+      .cx {
+        position: absolute;
+        width: 11px;
+        height: 11px;
+        line-height: 10px;
+        text-align: center;
+        color: #ffd166;
+        font-size: 12px;
+      }
+      .err {
+        border-color: #ff6b6b !important;
+        background: repeating-linear-gradient(45deg, transparent 0 4px, rgba(255, 107, 107, 0.35) 4px 5px) !important;
+      }
+      .lk {
+        position: absolute;
+        top: -1px;
+        right: -1px;
+        border: 1px solid #7ba2c4;
+        border-top: 0;
+        border-right: 0;
+        color: #9cc3e2;
+        font-size: 8px;
+        padding: 1px 4px;
+        background: rgba(13, 42, 68, 0.9);
+      }
+      .lv {
+        position: absolute;
+        left: 476px;
+        top: 230px;
+        width: 1px;
+        height: 96px;
+        background: #ff6b6b;
+      }
+      .nte {
+        position: absolute;
+        left: 492px;
+        top: 318px;
+        border: 1px solid #ff6b6b;
+        color: #ffb3b3;
+        background: rgba(13, 42, 68, 0.92);
+        padding: 4px 9px;
+        font-size: 10px;
+        letter-spacing: 1px;
+      }
+      .chh {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 298px;
+        height: 1px;
+        background: rgba(255, 209, 102, 0.3);
+      }
+      .chv {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 700px;
+        width: 1px;
+        background: rgba(255, 209, 102, 0.3);
+      }
+      .read {
+        position: absolute;
+        left: 706px;
+        top: 303px;
+        border: 1px solid #ffd166;
+        color: #ffd166;
+        background: #10304f;
+        padding: 2px 7px;
+        font-size: 10px;
+        letter-spacing: 1px;
+      }
+      .hud {
+        position: absolute;
+        right: 16px;
+        top: 14px;
+        width: 220px;
+        border: 1px solid rgba(207, 227, 245, 0.5);
+        background: rgba(13, 42, 68, 0.88);
+      }
+      .hh {
+        padding: 6px 10px;
+        border-bottom: 1px solid rgba(207, 227, 245, 0.5);
+        letter-spacing: 2px;
+        font-size: 10px;
+        color: #ffd166;
+      }
+      .hr {
+        display: flex;
+        justify-content: space-between;
+        padding: 5px 10px 4px;
+        font-size: 10.5px;
+        letter-spacing: 1px;
+        color: #9cc3e2;
+      }
+      .hr b {
+        color: #fff;
+        font-weight: 700;
+      }
+      .tb {
+        height: 6px;
+        background: rgba(207, 227, 245, 0.15);
+        margin: 0 10px 8px;
+      }
+      .tf {
+        display: block;
+        height: 100%;
+        background: #ffd166;
+      }
+      .acts {
+        position: absolute;
+        right: 16px;
+        bottom: 70px;
+        width: 220px;
+        border: 1px solid rgba(207, 227, 245, 0.5);
+        background: rgba(13, 42, 68, 0.88);
+        padding: 0 0 8px;
+      }
+      .abtn {
+        display: block;
+        margin: 7px 8px 0;
+        padding: 6px 8px;
+        background: transparent;
+        border: 1px solid rgba(207, 227, 245, 0.6);
+        color: #cfe3f5;
+        font: inherit;
+        font-size: 10.5px;
+        letter-spacing: 2px;
+        cursor: pointer;
+      }
+      .abtn:hover {
+        background: #cfe3f5;
+        color: #10304f;
+      }
+      .abtn.y {
+        border-color: #ffd166;
+        color: #ffd166;
+      }
+      .abtn.y:hover {
+        background: #ffd166;
+        color: #10304f;
+      }
+      .leg {
+        position: absolute;
+        left: 16px;
+        bottom: 14px;
+        border: 1px solid rgba(207, 227, 245, 0.5);
+        background: rgba(13, 42, 68, 0.88);
+        padding: 8px 12px;
+        font-size: 9.5px;
+        letter-spacing: 1px;
+        color: #9cc3e2;
+      }
+      .lr {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        margin-top: 5px;
+      }
+      .lr:first-child {
+        margin-top: 0;
+      }
+      .ls {
+        width: 12px;
+        height: 12px;
+        border: 1px solid #cfe3f5;
+        flex: none;
+        background: rgba(207, 227, 245, 0.07);
+      }
+      .tblock {
+        position: absolute;
+        right: 16px;
+        bottom: 14px;
+        display: flex;
+        border: 1px solid rgba(207, 227, 245, 0.6);
+        background: rgba(13, 42, 68, 0.92);
+      }
+      .tc {
+        padding: 6px 12px;
+        border-right: 1px solid rgba(207, 227, 245, 0.6);
+        font-size: 10px;
+        letter-spacing: 1px;
+        color: #eaf4fd;
+      }
+      .tc:last-child {
+        border-right: 0;
+      }
+      .tc span {
+        display: block;
+        color: #7ba2c4;
+        font-size: 8.5px;
+        margin-bottom: 2px;
+        letter-spacing: 1px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="sheet">
+      <header class="dhead">
+        <div class="cell">PROJECT TCS LOADING METER</div>
+        <div class="cell">PLAN <b>PLN-2024-0118</b></div>
+        <div class="cell">TRUCK <b>ACT-8842 · 13.6M MEGA</b></div>
+        <div class="cell">SHEET <b>01 / 01</b></div>
+        <div class="cell">SCALE <b>1 : 75</b></div>
+        <div class="cell rev">REV <b>B</b></div>
+      </header>
+      <div class="main">
+        <aside class="manifest">
+          <div class="m-head">CARGO MANIFEST — 11 ITEMS</div>
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>L × W (M)</th>
+                <th>KG</th>
+                <th>ST</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>EUR-A</td>
+                <td>1.20 × 0.80</td>
+                <td>850</td>
+                <td><span class="st ok">LOAD</span></td>
+              </tr>
+              <tr>
+                <td>EUR-B</td>
+                <td>1.20 × 0.80</td>
+                <td>790</td>
+                <td><span class="st ok">LOAD</span></td>
+              </tr>
+              <tr>
+                <td>EUR-C</td>
+                <td>1.20 × 0.80</td>
+                <td>910</td>
+                <td><span class="st ok">LOAD</span></td>
+              </tr>
+              <tr class="sel">
+                <td>EUR-D</td>
+                <td>1.20 × 0.80</td>
+                <td>640</td>
+                <td><span class="st ok">LOAD</span></td>
+              </tr>
+              <tr>
+                <td>BOX-E</td>
+                <td>0.80 × 0.60</td>
+                <td>320</td>
+                <td><span class="st ok">LOAD</span></td>
+              </tr>
+              <tr>
+                <td>BOX-F</td>
+                <td>0.80 × 0.60</td>
+                <td>290</td>
+                <td><span class="st ok">LOAD</span></td>
+              </tr>
+              <tr>
+                <td>EUR-G ↻</td>
+                <td>0.80 × 1.20</td>
+                <td>880</td>
+                <td><span class="st ok">LOAD</span></td>
+              </tr>
+              <tr class="errr">
+                <td>EUR-H</td>
+                <td>1.20 × 0.80</td>
+                <td>1,200</td>
+                <td><span class="st err">ERR</span></td>
+              </tr>
+              <tr>
+                <td>EUR-I</td>
+                <td>1.20 × 0.80</td>
+                <td>750</td>
+                <td><span class="st tbd">RDY</span></td>
+              </tr>
+              <tr>
+                <td>BOX-J</td>
+                <td>0.80 × 0.60</td>
+                <td>150</td>
+                <td><span class="st tbd">RDY</span></td>
+              </tr>
+              <tr>
+                <td>CRATE-K</td>
+                <td>1.00 × 1.00</td>
+                <td>480</td>
+                <td><span class="st tbd">RDY</span></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="m-foot">
+            SNAP 0.25 M · GRID 0.333 M · ROTATION 90°<br />CLICK ITEM TO SELECT · DRAG TO MOVE<br />R = ROTATE · ESC =
+            DESELECT
+          </div>
+        </aside>
+
+        <section class="draw">
+          <div class="cab"><span>CAB</span></div>
+          <div class="bed"></div>
+          <div class="cl"></div>
+          <div class="dima"><span class="diml">12.000 M</span></div>
+          <div class="dimb"><span class="dimlv">2.450 M</span></div>
+
+          <div class="tk" style="left: 250px"></div>
+          <div class="tkl" style="left: 250px">0</div>
+          <div class="tk" style="left: 323px"></div>
+          <div class="tkl" style="left: 323px">1</div>
+          <div class="tk" style="left: 396px"></div>
+          <div class="tkl" style="left: 396px">2</div>
+          <div class="tk" style="left: 469px"></div>
+          <div class="tkl" style="left: 469px">3</div>
+          <div class="tk" style="left: 542px"></div>
+          <div class="tkl" style="left: 542px">4</div>
+          <div class="tk" style="left: 615px"></div>
+          <div class="tkl" style="left: 615px">5</div>
+          <div class="tk" style="left: 688px"></div>
+          <div class="tkl" style="left: 688px">6</div>
+          <div class="tk" style="left: 761px"></div>
+          <div class="tkl" style="left: 761px">7</div>
+          <div class="tk" style="left: 834px"></div>
+          <div class="tkl" style="left: 834px">8</div>
+          <div class="tk" style="left: 907px"></div>
+          <div class="tkl" style="left: 907px">9</div>
+          <div class="tk" style="left: 980px"></div>
+          <div class="tkl" style="left: 980px">10</div>
+          <div class="tk" style="left: 1053px"></div>
+          <div class="tkl" style="left: 1053px">11</div>
+          <div class="tk" style="left: 1126px"></div>
+          <div class="tkl" style="left: 1126px">12</div>
+
+          <div class="it" style="left: 250px; top: 133px; width: 90px; height: 60px">
+            <em class="iid">EUR-A</em><span class="idim">1.20×0.80</span><span class="ikg">850KG</span
+            ><span class="lk">L</span>
+          </div>
+          <div class="it" style="left: 344px; top: 133px; width: 90px; height: 60px">
+            <em class="iid">EUR-B</em><span class="idim">1.20×0.80</span><span class="ikg">790KG</span>
+          </div>
+          <div class="it" style="left: 438px; top: 133px; width: 90px; height: 60px">
+            <em class="iid">EUR-C</em><span class="idim">1.20×0.80</span><span class="ikg">910KG</span>
+          </div>
+          <div
+            class="it"
+            style="
+              left: 532px;
+              top: 133px;
+              width: 90px;
+              height: 60px;
+              border-color: #ffd166;
+              background: rgba(255, 209, 102, 0.1);
+            ">
+            <em class="iid" style="color: #ffd166">EUR-D</em><span class="idim">1.20×0.80</span
+            ><span class="ikg">640KG</span>
+            <div class="cx" style="left: -14px; top: -14px">+</div>
+            <div class="cx" style="right: -14px; top: -14px">+</div>
+            <div class="cx" style="left: -14px; bottom: -14px">+</div>
+            <div class="cx" style="right: -14px; bottom: -14px">+</div>
+          </div>
+          <div class="it" style="left: 626px; top: 170px; width: 60px; height: 90px">
+            <em class="iid">EUR-G</em><span class="idim">0.80×1.20 ↻</span><span class="ikg">880KG</span>
+          </div>
+          <div class="it" style="left: 700px; top: 140px; width: 60px; height: 45px">
+            <em class="iid">BOX-E</em><span class="idim">0.80×0.60</span><span class="ikg">320KG</span>
+          </div>
+          <div class="it" style="left: 765px; top: 145px; width: 60px; height: 45px">
+            <em class="iid">BOX-F</em><span class="idim">0.80×0.60</span><span class="ikg">290KG</span>
+          </div>
+          <div class="it err" style="left: 430px; top: 170px; width: 90px; height: 60px">
+            <em class="iid">EUR-H</em><span class="idim">1.20×0.80</span><span class="ikg">1200KG</span>
+          </div>
+
+          <div class="lv"></div>
+          <div class="nte">OVERLAP EUR-C · Δ 0.42 M² — RESOLVE</div>
+
+          <div class="chh"></div>
+          <div class="chv"></div>
+          <div class="read">X 6.250 · Y 1.125 M</div>
+
+          <div class="hud">
+            <div class="hh">STATISTICS</div>
+            <div class="hr"><span>PLACED</span><b>08 / 11</b></div>
+            <div class="tb"><i class="tf" style="width: 73%"></i></div>
+            <div class="hr"><span>FLOOR USAGE</span><b>62%</b></div>
+            <div class="tb"><i class="tf" style="width: 62%"></i></div>
+            <div class="hr"><span>PAYLOAD</span><b>5,830 / 24,000 KG</b></div>
+            <div class="tb"><i class="tf" style="width: 24%"></i></div>
+          </div>
+
+          <div class="acts">
+            <div class="hh">ACTIONS</div>
+            <button class="abtn">SAVE PLAN</button>
+            <button class="abtn">LOAD PLAN</button>
+            <button class="abtn">AUTO LOAD</button>
+            <button class="abtn y">VERIFY · 8/11</button>
+          </div>
+
+          <div class="leg">
+            <div class="lr"><span class="ls"></span>PLACED</div>
+            <div class="lr"><span class="ls" style="border-color: #ffd166"></span>SELECTED</div>
+            <div class="lr"><span class="ls" style="background: #2a3644"></span>LOCKED</div>
+            <div class="lr">
+              <span
+                class="ls"
+                style="
+                  background: repeating-linear-gradient(45deg, transparent 0 3px, rgba(255, 107, 107, 0.5) 3px 4px);
+                  border-color: #ff6b6b;
+                "></span
+              >COLLISION
+            </div>
+            <div class="lr">
+              <span class="ls" style="border-color: #ffd166; background: transparent"></span>DIMENSION
+            </div>
+          </div>
+
+          <div class="tblock">
+            <div class="tc"><span>TITLE</span>LOADING PLAN · TRAILER 13.6M</div>
+            <div class="tc"><span>DWG NO</span>LC-118</div>
+            <div class="tc"><span>REV</span>B</div>
+            <div class="tc"><span>DATE</span>2026-08-26</div>
+            <div class="tc"><span>SCALE</span>1 : 75</div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </body>
+</html>

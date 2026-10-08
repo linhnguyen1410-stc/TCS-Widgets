@@ -1,0 +1,120 @@
+{
+  "project": "TCSTransport-main",
+  "mendixVersion": "10.24.17.102810",
+  "deploymentPath": "D:/Mendix/TCSTransport-main/deployment",
+  "mendixRuntime": {
+    "mxInstallPath": "C:/Program Files/Mendix/10.24.17.102810",
+    "runtimePort": 8882,
+    "adminPort": 9892,
+    "consolePath": "C:/Program Files/Mendix/10.24.17.102810/modeler/MendixConsoleLog.exe"
+  },
+  "urls": {
+    "base": "http://localhost:8882",
+    "login": "http://localhost:8882/login.html",
+    "index": "http://localhost:8882/index.html",
+    "loadingMeterValidation": "http://localhost:8882/p/LoadingMeter_Validation",
+    "truckSelectionView2D": "http://localhost:8882/p/TruckSelection_View2D",
+    "homepageStudent": "http://localhost:8882/p/Homepage_Student",
+    "loadingMeterCalculate": "http://localhost:8882/p/LoadingMeter_Calculate"
+  },
+  "testUsers": {
+    "student": {
+      "username": "sp_testuser01@edu.stc-r.nl",
+      "password": "#STCGroup1",
+      "role": "Student",
+      "accessiblePages": [
+        "Homepage_Student",
+        "LoadingMeter_Validation"
+      ]
+    },
+    "demoAdministrator": {
+      "username": "demo_administrator",
+      "password": "1",
+      "role": "Administrator",
+      "loginMethod": "demo user link on index.html"
+    },
+    "demoTeacher": {
+      "username": "demo_teacher",
+      "password": "1",
+      "role": "TCSTeacher",
+      "loginMethod": "demo user link on index.html"
+    },
+    "demoFunctionalManager": {
+      "username": "demo_functional_manager",
+      "password": "1",
+      "role": "FunctionalManager",
+      "loginMethod": "demo user link on index.html"
+    }
+  },
+  "widget": {
+    "name": "LoadingCanvas",
+    "namespace": "stcvn.loadingcanvas",
+    "version": "1.0.0",
+    "sourcePath": "d:/source/loadingcanvas-mendix-widget",
+    "pagesUsingWidget": [
+      "LoadingMeter_Validation",
+      "TruckSelection_View2D"
+    ],
+    "dataSource": "TruckSelection (TCSLoadingMeter.TruckSelection)",
+    "associatedEntities": [
+      "TCSLoadingMeter.TruckSelection",
+      "TCSLoadingMeter.PackingPlan",
+      "TCSLoadingMeter.PackingPlanItem",
+      "TCSTransportModule.TransportOrder",
+      "TCSTransportModule.ResourceInstance",
+      "DataModelModule.Resource",
+      "DataModelModule.TechnicalDetails"
+    ]
+  },
+  "database": {
+    "type": "postgresql",
+    "path": "D:/Mendix/TCSTransport-main/deployment/data/database/hsqldb/default",
+    "keyTables": [
+      "datamodelmodule$technicaldetails",
+      "tcstransportmodule$resourceinstance",
+      "datamodelmodule$resource",
+      "tcsloadingmeter$truckselection",
+      "tcsloadingmeter$truckselection_resourceinstance",
+      "tcstransportmodule$resourceinstance_resource",
+      "datamodelmodule$resource_technicaldetails"
+    ],
+    "technicalDetailsColumns": [
+      "id",
+      "nameresource",
+      "combinationlength",
+      "combinationwidth",
+      "combinationheight",
+      "vehiclenrofaxels",
+      "vehiclemaxaxelweight",
+      "vehicleemptyweight",
+      "vehicleallowedtotalweight"
+    ]
+  },
+  "mcpServerConfig": {
+    "firefoxProfile": "default",
+    "headless": false,
+    "viewport": {
+      "width": 1920,
+      "height": 1080
+    },
+    "timeouts": {
+      "navigation": 30000,
+      "element": 10000,
+      "script": 30000
+    }
+  },
+  "testCredentials": {
+    "student": {
+      "description": "Student role - can view loading canvas",
+      "username": "sp_testuser01@edu.stc-r.nl",
+      "password": "#STCGroup1"
+    }
+  },
+  "notes": [
+    "Demo users (demo_administrator, demo_teacher, demo_functionalManager) use password '1' but login via anchor links on index.html, not form submission",
+    "Student user sp_testuser01@edu.stc-r.nl requires password '#STCGroup1' and logs in via form submission on login.html",
+    "Mendix session cookies don't persist well in headless browser automation - full session requires WebSocket connection",
+    "Widget reads truck dimensions from TechnicalDetails via association chain: TruckSelection -> ResourceInstance -> Resource -> TechnicalDetails",
+    "Truck dimensions: combinationlength (meters), combinationwidth (meters), nameresource (string)"
+  ]
+}

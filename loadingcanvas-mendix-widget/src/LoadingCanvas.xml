@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<widget id="stcvn.loadingcanvas.LoadingCanvas" pluginWidget="true" needsEntityContext="false" offlineCapable="false"
+        supportedPlatform="Web"
+        xmlns="http://www.mendix.com/widget/1.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.mendix.com/widget/1.0/ ../node_modules/custom_widget.xsd">
+    <name>Loading Canvas</name>
+    <description>Interactive packing canvas for truck loading planning. Supports pallet and box positioning, 90° rotation, grid snapping, real-time validation, and loading/saving packing plans.</description>
+    <icon/>
+    <properties>
+        <propertyGroup caption="Data">
+            <property key="truckSelection" type="datasource" isList="true" required="false">
+                <caption>Truck Selection</caption>
+                <description>The TruckSelection datasource from page parameters or microflow</description>
+            </property>
+            <property key="transportOrders" type="datasource" isList="true" required="false">
+                <caption>Transport Orders</caption>
+                <description>List of TransportOrder objects to display as cargo items</description>
+            </property>
+            <property key="session" type="datasource" isList="true" required="false">
+                <caption>Session</caption>
+                <description>The Session datasource from page parameters</description>
+            </property>
+        </propertyGroup>
+        <propertyGroup caption="Canvas">
+            <property key="canvasWidth" type="integer" required="true" defaultValue="1000">
+                <caption>Canvas Width (px)</caption>
+                <description>Width of the canvas in pixels</description>
+            </property>
+            <property key="canvasHeight" type="integer" required="true" defaultValue="600">
+                <caption>Canvas Height (px)</caption>
+                <description>Height of the canvas in pixels</description>
+            </property>
+        </propertyGroup>
+        <propertyGroup caption="Events">
+            <property key="onSavePlan" type="action" required="false">
+                <caption>On Save Plan</caption>
+                <description>Action triggered when the user saves the packing plan</description>
+            </property>
+            <property key="onLoadPlan" type="action" required="false">
+                <caption>On Load Plan</caption>
+                <description>Action triggered when the widget loads the packing plan</description>
+            </property>
+        </propertyGroup>
+    </properties>
+</widget>
