@@ -48,7 +48,7 @@
     "testUsers": {
       "student": {
         "username": "sp_testuser01@edu.stc-r.nl",
-        "password": "#STCGroup1",
+        "password": "******",
         "role": "Student"
       }
     },
