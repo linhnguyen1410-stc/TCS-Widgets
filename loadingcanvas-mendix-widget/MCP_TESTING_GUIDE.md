@@ -31,7 +31,7 @@ curl http://localhost:8882/login.html
 
 ### Student User (can view loading canvas)
 - **Username**: `sp_testuser01@edu.stc-r.nl`
-- **Password**: `#STCGroup1`
+- **Password**: `*********`
 - **Login Method**: Form submission on `/login.html`
 - **Access**: LoadingMeter_Validation, Homepage_Student
 
@@ -55,7 +55,7 @@ await navigate_page({ url: "http://localhost:8882/login.html", wait: "interactiv
 await fill_form_by_uid({
   elements: [
     { uid: "USERNAME_INPUT_UID", value: "sp_testuser01@edu.stc-r.nl" },
-    { uid: "PASSWORD_INPUT_UID", value: "#STCGroup1" }
+    { uid: "PASSWORD_INPUT_UID", value: "************" }
   ]
 });
 
