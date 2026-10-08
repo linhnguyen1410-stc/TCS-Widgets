@@ -20,7 +20,7 @@
   "testUsers": {
     "student": {
       "username": "sp_testuser01@edu.stc-r.nl",
-      "password": "#STCGroup1",
+      "password": "******",
       "role": "Student",
       "accessiblePages": [
         "Homepage_Student",
@@ -35,7 +35,7 @@
     },
     "demoTeacher": {
       "username": "demo_teacher",
-      "password": "1",
+      "password": "*****",
       "role": "TCSTeacher",
       "loginMethod": "demo user link on index.html"
     },
