@@ -10,7 +10,7 @@
         "POSTGRES_PORT": "5432",
         "POSTGRES_DATABASE": "mendix",
         "POSTGRES_USER": "mendix",
-        "POSTGRES_PASSWORD": "mendix"
+        "POSTGRES_PASSWORD": "******"
       },
       "description": "PostgreSQL database for Mendix app data verification"
     },
@@ -43,7 +43,7 @@
       "port": 5432,
       "database": "mendix",
       "user": "mendix",
-      "password": "mendix"
+      "password": "*****"
     },
     "testUsers": {
       "student": {
